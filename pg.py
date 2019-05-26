@@ -8,7 +8,6 @@ parser = argparse.ArgumentParser(
     description='Upload Jira tickets from XML file to Zotero web application.')
 parser.add_argument(
     'xml_filepath',
-    metavar='xml_filepath',
     help='filepath of XML file that contains Jira tickets')
 
 args = parser.parse_args()
