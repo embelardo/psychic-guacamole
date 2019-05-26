@@ -15,6 +15,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "centos/7" # Based on CentOS 7.6.1811
   config.vm.hostname = "psychic-guacamole"
 
+  config.vm.provision "shell", path: "provision.sh"
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
