@@ -12,19 +12,19 @@ For example, to request only the issue key and summary append 'field=key&field=s
         <title>JIRA</title>
         <link>https://jira.intelerad.com/issues/?jql=project+%3D+IP+AND+resolution+%3D+Done+AND+comment+%7E+%22Relevant+changesets+in+this+release%3A%22+AND+%22RPM+Upgrade+List%22+%3D+IocmAgent+AND+updated+%3E%3D+-25h+ORDER+BY+key+DESC</link>
         <description>An XML representation of a search request</description>
-                <language>en-us</language>
-                        <issue start="0" end="1" total="1"/>
-                <build-info>
+        <language>en-us</language>
+        <issue start="0" end="1" total="1"/>
+        <build-info>
             <version>7.7.0</version>
             <build-number>77001</build-number>
             <build-date>11-01-2018</build-date>
         </build-info>
 
-<item>
+        <item>
             <title>[IP-103951] IocmAgent:  Does not send manualCorrections if sendImages is disabled. </title>
-                <link>https://jira.intelerad.com/browse/IP-103951</link>
-                <project id="11701" key="IP">IntelePACS</project>
-                    <description>&lt;h4&gt;&lt;a name=&quot;RPMVersion&quot;&gt;&lt;/a&gt;RPM Version&lt;/h4&gt;
+            <link>https://jira.intelerad.com/browse/IP-103951</link>
+            <project id="11701" key="IP">IntelePACS</project>
+            <description>&lt;h4&gt;&lt;a name=&quot;RPMVersion&quot;&gt;&lt;/a&gt;RPM Version&lt;/h4&gt;
 &lt;p&gt;IocmAgent-4.14.1.P433-ims01.noarch&lt;/p&gt;
 &lt;h4&gt;&lt;a name=&quot;ISPClient%3A%3Cclientcode%3E&quot;&gt;&lt;/a&gt;ISP - Client : &lt;a href=&quot;https://inteleradprod.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=xxxx&quot; target=&quot;_blank&quot;&gt;xxxx&lt;/a&gt; - &amp;lt;client code&amp;gt;&lt;/h4&gt;
 &lt;p&gt;RDS&lt;/p&gt;
@@ -46,34 +46,34 @@ For example, to request only the issue key and summary append 'field=key&field=s
 &lt;p&gt;IOCM inserts a bunch of series send events as it ingests and those get skipped when another exists.  So when a large CT series comes in that takes 7 or so minutes to send over the wire and is subsequently ingested in batches by LDS, we end up only sending the final series_send and loose the time we could have been routing images,. &lt;/p&gt;
 
 &lt;p&gt;To circumvent this we were going to try to turn off sendImages and use AutoRoute, but it turns out that turning off sendImages we loose the corrections through IOCM as well.   Arguably we could attempt to rely on route Corrected images but depending on Autoroute configuration and the fact that this would also route all ris corrections this isn&apos;t preferred. &lt;/p&gt;
-</description>
+            </description>
             <key id="153224">IP-103951</key>
             <summary>IocmAgent:  Does not send manualCorrections if sendImages is disabled. </summary>
-                <type id="1" iconUrl="https://jira.intelerad.com/secure/viewavatar?size=xsmall&amp;avatarId=13903&amp;avatarType=issuetype">Bug</type>
-                                            <priority id="12" iconUrl="https://jira.intelerad.com/images/icons/priorities/ims-unprioritized_decision-64.png">unprioritized</priority>
-                        <status id="6" iconUrl="https://jira.intelerad.com/images/icons/statuses/closed.png" description="The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.">Closed</status>
-                    <statusCategory id="3" key="done" colorName="green"/>
-                                    <resolution id="8">Done</resolution>
-                                        <assignee username="ambaye">Alioune Mbaye</assignee>
-                                    <reporter username="jtournas">John Tournas</reporter>
-                        <labels>
-                            <label>Client_Escalation</label>
-                            <label>PMO</label>
-                    </labels>
-                <created>Wed, 17 Apr 2019 15:27:54 -0400</created>
-                <updated>Fri, 24 May 2019 15:14:37 -0400</updated>
-                            <resolved>Wed, 22 May 2019 13:51:03 -0400</resolved>
-                                    <version>4-14-1</version>
-                                    <fixVersion>4-14-1</fixVersion>
-                                    <component>Image Workflow</component>
-                        <due></due>
-                            <votes>0</votes>
-                                    <watches>7</watches>
-                                    <timeoriginalestimate seconds="0">0 minutes</timeoriginalestimate>
-                                    <timespent seconds="270000">1 week, 4 days, 3 hours</timespent>
-                                <comments>
-                            <comment id="525031" author="tmartyres" created="Tue, 23 Apr 2019 12:59:07 -0400"  >&lt;p&gt;requesting LOE.&lt;/p&gt;</comment>
-                            <comment id="525032" author="jtournas" created="Tue, 23 Apr 2019 13:04:30 -0400"  >
+            <type id="1" iconUrl="https://jira.intelerad.com/secure/viewavatar?size=xsmall&amp;avatarId=13903&amp;avatarType=issuetype">Bug</type>
+            <priority id="12" iconUrl="https://jira.intelerad.com/images/icons/priorities/ims-unprioritized_decision-64.png">unprioritized</priority>
+            <status id="6" iconUrl="https://jira.intelerad.com/images/icons/statuses/closed.png" description="The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.">Closed</status>
+            <statusCategory id="3" key="done" colorName="green"/>
+            <resolution id="8">Done</resolution>
+            <assignee username="ambaye">Alioune Mbaye</assignee>
+            <reporter username="jtournas">John Tournas</reporter>
+            <labels>
+                <label>Client_Escalation</label>
+                <label>PMO</label>
+            </labels>
+            <created>Wed, 17 Apr 2019 15:27:54 -0400</created>
+            <updated>Fri, 24 May 2019 15:14:37 -0400</updated>
+            <resolved>Wed, 22 May 2019 13:51:03 -0400</resolved>
+            <version>4-14-1</version>
+            <fixVersion>4-14-1</fixVersion>
+            <component>Image Workflow</component>
+            <due></due>
+            <votes>0</votes>
+            <watches>7</watches>
+            <timeoriginalestimate seconds="0">0 minutes</timeoriginalestimate>
+            <timespent seconds="270000">1 week, 4 days, 3 hours</timespent>
+            <comments>
+                <comment id="525031" author="tmartyres" created="Tue, 23 Apr 2019 12:59:07 -0400">&lt;p&gt;requesting LOE.&lt;/p&gt;</comment>
+                <comment id="525032" author="jtournas" created="Tue, 23 Apr 2019 13:04:30 -0400">
 &lt;p&gt;A few examples traced after we turned on Autoroute.  End result is it performs better than IOCM for sending images most of the time &lt;/p&gt;
 
 &lt;p&gt;Traced a few series and here are some findings. &lt;/p&gt;
@@ -135,11 +135,11 @@ Looking at one of  the other 12: &lt;br/&gt;
 &lt;p&gt;This plays to the comment I made to Jeff that sometimes IOCM is working quickly but overall we seem to have the bulk of the study being sent through autoroute before IOCM even got to attempting it.  &lt;/p&gt;
 
 &lt;p&gt;RDS is going to want this prioritized as in their eyes, IOCM just isn&apos;t getting the job done.  So if we reject this we need something to go back to them with.  &lt;/p&gt;</comment>
-                            <comment id="525127" author="glaza" created="Wed, 24 Apr 2019 10:03:57 -0400"  >&lt;p&gt;RDS is at R50. R59 has very significant performance improvements. I believe that they are enough to go back from AutoRoute to Iocm. This lowers the importance of this bug. But it would still add more flexibility in the future.&lt;/p&gt;
+                <comment id="525127" author="glaza" created="Wed, 24 Apr 2019 10:03:57 -0400">&lt;p&gt;RDS is at R50. R59 has very significant performance improvements. I believe that they are enough to go back from AutoRoute to Iocm. This lowers the importance of this bug. But it would still add more flexibility in the future.&lt;/p&gt;
 
 &lt;h4&gt;&lt;a name=&quot;ProposedSolution%3A&quot;&gt;&lt;/a&gt;Proposed Solution:&lt;/h4&gt;
 &lt;p&gt;Create a new config key to control the corrections and have sentImages only apply to SERIES_SEND activities.&lt;/p&gt;</comment>
-                            <comment id="525132" author="mvilleneuve" created="Wed, 24 Apr 2019 10:11:38 -0400"  >&lt;p&gt;Hi George&lt;/p&gt;
+                <comment id="525132" author="mvilleneuve" created="Wed, 24 Apr 2019 10:11:38 -0400">&lt;p&gt;Hi George&lt;/p&gt;
 
 &lt;p&gt;In the meantime, do you suggest to update RDS to 4-14-1-R59?&lt;br/&gt;
 What kind of performance improvements can have a significant impact on the current issue? RDS will ask.&lt;/p&gt;
@@ -147,7 +147,7 @@ What kind of performance improvements can have a significant impact on the curre
 &lt;p&gt;Thanks for your time and help&lt;/p&gt;
 
 &lt;p&gt;Martin&lt;/p&gt;</comment>
-                            <comment id="525140" author="jtournas" created="Wed, 24 Apr 2019 10:49:11 -0400"  >&lt;p&gt;From what I can tell these are all the fixes:&lt;/p&gt;
+                <comment id="525140" author="jtournas" created="Wed, 24 Apr 2019 10:49:11 -0400">&lt;p&gt;From what I can tell these are all the fixes:&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/browse/IP-102927&quot; title=&quot;IocmAgent: Image Resent when it failed to do &amp;quot;Signaling Storage Commitment Handler to wake up&amp;quot;&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-102927&quot;&gt;&lt;del&gt;IP-102927&lt;/del&gt;&lt;/a&gt;	MAJOR	CLO/DON	IocmAgent: Image Resent when it failed to do &quot;Signaling Storage Commitment Handler to wake up&quot;	IocmAgent&lt;br/&gt;
 &lt;a href=&quot;https://jira.intelerad.com/browse/IP-102953&quot; title=&quot;IocmAgent: Loading all SOPs in a Series causes OutOfMemory&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-102953&quot;&gt;&lt;del&gt;IP-102953&lt;/del&gt;&lt;/a&gt;	MAJOR	CLO/DON	IocmAgent: Loading all SOPs in a Series causes OutOfMemory	IocmAgent&lt;br/&gt;
@@ -161,13 +161,13 @@ send_image&lt;br/&gt;
 &lt;a href=&quot;https://jira.intelerad.com/browse/IP-97648&quot; title=&quot;IOCM: sendSeriesToArchive should un-reserve series on LDS and the reservation time-out should be de same used to send images&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-97648&quot;&gt;&lt;del&gt;IP-97648&lt;/del&gt;&lt;/a&gt;	MAJOR	CLO/DON	IOCM: sendSeriesToArchive should un-reserve series on LDS and the reservation time-out should be de same used to send images	IocmAgent&lt;/p&gt;
 
 &lt;p&gt;I don&apos;t believe any of these affect the behavior that IOCM waits until all images are completely ingested prior to sending.  Which means as seen through investigation and comparing to Autoroute performance, Autoroute woudl still &quot;win&quot; the race of routing images sooner (partial or not) which is the behavior RDS is complaining about.   &lt;/p&gt;</comment>
-                            <comment id="525143" author="tmartyres" created="Wed, 24 Apr 2019 10:59:22 -0400"  >&lt;p&gt;Full list of IOCM enhancements can be found &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1tbn_dguPHSJVclcg6AsuqmChjeGBJMCDaJLeKgYBRl0/edit#gid=0&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</comment>
-                            <comment id="525154" author="tmartyres" created="Wed, 24 Apr 2019 11:40:28 -0400"  >&lt;p&gt;This issue has been prioritized on the top of the backlog &lt;/p&gt;</comment>
-                            <comment id="526398" author="mark.groves" created="Fri, 3 May 2019 10:21:50 -0400"  >&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=jtournas&quot; class=&quot;user-hover&quot; rel=&quot;jtournas&quot;&gt;John Tournas&lt;/a&gt; I believe that you are mistaken in how IOCM works. LDS creates a SERIES_SEND operation for each ingested batch and sends it to IOCM. IOCM will compress multiple consecutive SEND_SERIES operations into a single one, but if the images are coming in super-slow, IOCM will send partial series just like Autoroute.&lt;/p&gt;
+                <comment id="525143" author="tmartyres" created="Wed, 24 Apr 2019 10:59:22 -0400">&lt;p&gt;Full list of IOCM enhancements can be found &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1tbn_dguPHSJVclcg6AsuqmChjeGBJMCDaJLeKgYBRl0/edit#gid=0&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</comment>
+                <comment id="525154" author="tmartyres" created="Wed, 24 Apr 2019 11:40:28 -0400">&lt;p&gt;This issue has been prioritized on the top of the backlog &lt;/p&gt;</comment>
+                <comment id="526398" author="mark.groves" created="Fri, 3 May 2019 10:21:50 -0400">&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=jtournas&quot; class=&quot;user-hover&quot; rel=&quot;jtournas&quot;&gt;John Tournas&lt;/a&gt; I believe that you are mistaken in how IOCM works. LDS creates a SERIES_SEND operation for each ingested batch and sends it to IOCM. IOCM will compress multiple consecutive SEND_SERIES operations into a single one, but if the images are coming in super-slow, IOCM will send partial series just like Autoroute.&lt;/p&gt;
 
 &lt;p&gt;We have made a number of improvements to IOCM to optimize the compression of operations and general IOCM behaviour, which should also help get rid of the &quot;deferring due to future activity&quot; you were seeing. Once RDS receives their FRU, I expect that this bug will become unnecessary.&lt;/p&gt;</comment>
-                            <comment id="526410" author="jtournas" created="Fri, 3 May 2019 10:40:52 -0400"  >&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=mgroves&quot; class=&quot;user-hover&quot; rel=&quot;mgroves&quot;&gt;Mark Groves&lt;/a&gt; The logs on site evaluated showed that a large series deferred several times, and was 100% sent by Autoroute before IOCM even processed the first series send since it kept deferring.  I agree that the FRU is needed to evaluate if this is still the case.  I suspect there are still optimisations to be made but I will be happy to be proven wrong. &lt;/p&gt;</comment>
-                            <comment id="526622" author="ambaye" created="Mon, 6 May 2019 12:14:16 -0400"  >&lt;p&gt;&lt;b&gt;Changeset:&lt;/b&gt;&lt;br/&gt;
+                <comment id="526410" author="jtournas" created="Fri, 3 May 2019 10:40:52 -0400">&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=mgroves&quot; class=&quot;user-hover&quot; rel=&quot;mgroves&quot;&gt;Mark Groves&lt;/a&gt; The logs on site evaluated showed that a large series deferred several times, and was 100% sent by Autoroute before IOCM even processed the first series send since it kept deferring.  I agree that the FRU is needed to evaluate if this is still the case.  I suspect there are still optimisations to be made but I will be happy to be proven wrong. &lt;/p&gt;</comment>
+                <comment id="526622" author="ambaye" created="Mon, 6 May 2019 12:14:16 -0400">&lt;p&gt;&lt;b&gt;Changeset:&lt;/b&gt;&lt;br/&gt;
 We bypass the check policy (sendImages config) when processing a study correct.&lt;br/&gt;
 Like this, when a correction is requested on a study, we send the correction to the VNA even if the sendImages config key is set to false. &lt;/p&gt;
 
@@ -175,8 +175,8 @@ Like this, when a correction is requested on a study, we send the correction to 
 &lt;ul&gt;
 	&lt;li&gt;Request a correction when sendImages is set to false&lt;/li&gt;
 &lt;/ul&gt;
-</comment>
-                            <comment id="526658" author="ambaye" created="Mon, 6 May 2019 14:07:33 -0400"  >&lt;h4&gt;&lt;a name=&quot;&quot;&gt;&lt;/a&gt;&lt;font color=&quot;#d04437&quot;&gt;Review changeset&lt;/font&gt;&lt;/h4&gt;
+                </comment>
+                <comment id="526658" author="ambaye" created="Mon, 6 May 2019 14:07:33 -0400">&lt;h4&gt;&lt;a name=&quot;&quot;&gt;&lt;/a&gt;&lt;font color=&quot;#d04437&quot;&gt;Review changeset&lt;/font&gt;&lt;/h4&gt;
 
 &lt;p&gt;&lt;img class=&quot;emoticon&quot; src=&quot;https://jira.intelerad.com/images/icons/emoticons/check.png&quot; height=&quot;16&quot; width=&quot;16&quot; align=&quot;absmiddle&quot; alt=&quot;&quot; border=&quot;0&quot;/&gt; Code review ( code, Intelerad coding conventions )&lt;br/&gt;
 &lt;img class=&quot;emoticon&quot; src=&quot;https://jira.intelerad.com/images/icons/emoticons/check.png&quot; height=&quot;16&quot; width=&quot;16&quot; align=&quot;absmiddle&quot; alt=&quot;&quot; border=&quot;0&quot;/&gt; Code commit message ( Kallithea/Forge )&lt;/p&gt;
@@ -193,22 +193,22 @@ Like this, when a correction is requested on a study, we send the correction to 
 &lt;h4&gt;&lt;a name=&quot;&quot;&gt;&lt;/a&gt;&lt;font color=&quot;#d04437&quot;&gt;Others&lt;/font&gt;&lt;/h4&gt;
 
 &lt;p&gt;&lt;img class=&quot;emoticon&quot; src=&quot;https://jira.intelerad.com/images/icons/emoticons/check.png&quot; height=&quot;16&quot; width=&quot;16&quot; align=&quot;absmiddle&quot; alt=&quot;&quot; border=&quot;0&quot;/&gt; Documentations ( If any )&lt;/p&gt;
-</comment>
-                            <comment id="526741" author="afaiyaz" created="Mon, 6 May 2019 18:23:16 -0400"  >&lt;p&gt;&lt;b&gt;Update&lt;/b&gt; Trunk env devX created for reproduction. Reproduction to be done. &lt;/p&gt;</comment>
-                            <comment id="526940" author="afaiyaz" created="Tue, 7 May 2019 17:28:52 -0400"  >&lt;p&gt;&lt;b&gt;Update&lt;/b&gt; : &lt;br/&gt;
+                </comment>
+                <comment id="526741" author="afaiyaz" created="Mon, 6 May 2019 18:23:16 -0400">&lt;p&gt;&lt;b&gt;Update&lt;/b&gt; Trunk env devX created for reproduction. Reproduction to be done. &lt;/p&gt;</comment>
+                <comment id="526940" author="afaiyaz" created="Tue, 7 May 2019 17:28:52 -0400">&lt;p&gt;&lt;b&gt;Update&lt;/b&gt; : &lt;br/&gt;
 Reproduction successfully done&lt;br/&gt;
 Testing in progress&lt;br/&gt;
 Test cases to be done for the ticket are documented in this &lt;a href=&quot;https://docs.google.com/document/d/1oETHXhoYp2xau2eY9_tBxk_fLsjP8-UwOktW6O5KU_M/edit#&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;document&lt;/a&gt;. 7/9 tests executed so far. &lt;/p&gt;</comment>
-                            <comment id="527011" author="kjette" created="Wed, 8 May 2019 10:47:27 -0400"  >&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=afaiyaz&quot; class=&quot;user-hover&quot; rel=&quot;afaiyaz&quot;&gt;Adil Faiyaz&lt;/a&gt; How about this for the release notes:&lt;br/&gt;
+                <comment id="527011" author="kjette" created="Wed, 8 May 2019 10:47:27 -0400">&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=afaiyaz&quot; class=&quot;user-hover&quot; rel=&quot;afaiyaz&quot;&gt;Adil Faiyaz&lt;/a&gt; How about this for the release notes:&lt;br/&gt;
 The IocmAgent is skipping manual corrections when the sending images to the VNA option is disabled in the archiving policy; therefore, corrected images are not being sent to the VNA.&lt;/p&gt;</comment>
-                            <comment id="527018" author="afaiyaz" created="Wed, 8 May 2019 11:09:57 -0400"  >&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=kjette&quot; class=&quot;user-hover&quot; rel=&quot;kjette&quot;&gt;Kathleen Jette&lt;/a&gt;&lt;br/&gt;
+                <comment id="527018" author="afaiyaz" created="Wed, 8 May 2019 11:09:57 -0400">&lt;p&gt;&lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=kjette&quot; class=&quot;user-hover&quot; rel=&quot;kjette&quot;&gt;Kathleen Jette&lt;/a&gt;&lt;br/&gt;
 Hi Kathleen, &lt;br/&gt;
 Yes, that&apos;s what the bug was. If you&apos;re putting in the release notes what the bug was, then it&apos;s correct &lt;img class=&quot;emoticon&quot; src=&quot;https://jira.intelerad.com/images/icons/emoticons/smile.png&quot; height=&quot;16&quot; width=&quot;16&quot; align=&quot;absmiddle&quot; alt=&quot;&quot; border=&quot;0&quot;/&gt; but please do change the archiving policy to Iocm policy &lt;/p&gt;
 &lt;div class=&quot;preformatted panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;preformattedContent panelContent&quot;&gt;
 &lt;pre&gt;The IocmAgent is skipping manual corrections, even though it&apos;s enabled, when the sending images to the VNA option is disabled in the Iocm policy; therefore, corrected images are not being sent to the VNA
 &lt;/pre&gt;
 &lt;/div&gt;&lt;/div&gt;</comment>
-                            <comment id="527019" author="afaiyaz" created="Wed, 8 May 2019 11:11:31 -0400"  >&lt;p&gt;&lt;b&gt;Reproduced with RPMs:&lt;/b&gt;&lt;br/&gt;
+                <comment id="527019" author="afaiyaz" created="Wed, 8 May 2019 11:11:31 -0400">&lt;p&gt;&lt;b&gt;Reproduced with RPMs:&lt;/b&gt;&lt;br/&gt;
 IocmAgent-4.18.2.A2-ims01.noarch&lt;/p&gt;
 
 &lt;h4&gt;&lt;a name=&quot;StepsforReproduction&quot;&gt;&lt;/a&gt;Steps for Reproduction &lt;/h4&gt;
@@ -294,12 +294,12 @@ IocmAgent-4.18.2.P000-ims99.noarch&lt;/p&gt;
 {
         Id                 = 6
         StudyUID           = 1.2.276.0.7230010.3.1.2.346817280.24838.1557255338.294265
-        SeriesUID          = 
+        SeriesUID          =
         Status             = PENDING
         Operation          = STUDY_CORRECT
         RetryAfter         = 2019-05-07 15:02:27.528
         NumExecutions      = 0
-        LastFailure        = 
+        LastFailure        =
         TimestampTriggered = 2019-05-07 15:02:20.373
         TimestampInserted  = 2019-05-07 15:02:27.648014
         TimestampUpdated   = 2019-05-07 15:02:27.648014
@@ -309,13 +309,12 @@ IocmAgent-4.18.2.P000-ims99.noarch&lt;/p&gt;
 [2019-05-07 15:02:29.548 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Negotiating protocol &apos;[0:com.intelerad.dicommasterservice.protocol.dicommasterquery.DicomMasterQueryProtocol5@5cc97cac]&apos; with &apos;mst1.intelerad.co
 m:5012&apos;
 [2019-05-07 15:02:29.619 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Remote host that serviced request: mst1.intelerad.com
-[2019-05-07 15:02:29.648 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Connecting to &apos;DicomMasterQueryService&apos; on &apos;mst1.intelerad.com:5012&apos; with protocol &apos;DicomMasterQueryProtocol5.1&apos; and session &apos;eyJ2IjoxLCJlIjoxNT
-U3MjU2MDQ5LCJjIjoxNTU3MjU1NzQ5LCJoIjoibXN0MS5pbnRlbGVyYWQuY29tIiwicCI6NTAxMn0=&apos;
+[2019-05-07 15:02:29.648 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Connecting to &apos;DicomMasterQueryService&apos; on &apos;mst1.intelerad.com:5012&apos; with protocol &apos;DicomMasterQueryProtocol5.1&apos; and session &apos;eyJ2IjoxLCJlIjoxNT U3MjU2MDQ5LCJjIjoxNTU3MjU1NzQ5LCJoIjoibXN0MS5pbnRlbGVyYWQuY29tIiwicCI6NTAxMn0=&apos;
 [2019-05-07 15:02:29.654 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Service API &apos;com.intelerad.dicommasterservice.protocol.dicommasterquery.DicomMasterQuery4&apos; will be served by service &apos;DicomMasterQueryService&apos; o
 n &apos;mst1.intelerad.com:5012&apos; using session &apos;eyJ2IjoxLCJlIjoxNTU3MjU2MDQ5LCJjIjoxNTU3MjU1NzQ5LCJoIjoibXN0MS5pbnRlbGVyYWQuY29tIiwicCI6NTAxMn0=&apos;
 [2019-05-07 15:02:29.663 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] requesting specific host mst1.intelerad.com
 [2019-05-07 15:02:29.676 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Remote host that serviced request: mst1.intelerad.com
-[2019-05-07 15:02:29.726 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Sending C-FIND request to [QATOOLS] to get all SOP Instance UIDs: 
+[2019-05-07 15:02:29.726 IOCM_WORKER_0 mst1.intelerad.com (TRACE)] Sending C-FIND request to [QATOOLS] to get all SOP Instance UIDs:
 (0008,0052) CS #6 [SERIES] Query/Retrieve Level
 (0010,0010) PN #0 [] Patient&apos;s Name
 (0010,0020) LO #0 [] Patient ID
@@ -381,7 +380,7 @@ man_being_running_this_by_hand_or_in_a_script_because_if_that_were_the_case_id_u
 	&lt;li&gt;Ensure that the STUDY_CORRECT was skipped in iocmactivity
 	&lt;ul&gt;
 		&lt;li&gt;&lt;div class=&quot;preformatted panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;preformattedContent panelContent&quot;&gt;
-&lt;pre&gt;activity_id |                         study_uid                         |                        series_uid                         | status |   operation   |        retry_after         | num_executions |                                    last_failure                                    |      timestamp_inserted       |       timestamp_updated       |       triggered_time       | identifier  |               attributes               
+&lt;pre&gt;activity_id |                         study_uid                         |                        series_uid                         | status |   operation   |        retry_after         | num_executions |                                    last_failure                                    |      timestamp_inserted       |       timestamp_updated       |       triggered_time       | identifier  |               attributes
 -------------+-----------------------------------------------------------+-----------------------------------------------------------+--------+---------------+----------------------------+----------------+------------------------------------------------------------------------------------+-------------------------------+-------------------------------+----------------------------+-------------+----------------------------------------
            7 | 1.2.276.0.7230010.3.1.2.346817280.24838.1557255338.294265 | NULL                                                      | DONE   | STUDY_CORRECT | 2019-05-07 15:19:00.472-04 |              1 | SKIPPED: Skipped because this study correction had no effective changes to any tag | 2019-05-07 15:19:00.475056-04 | 2019-05-07 15:19:05.399788-04 | 2019-05-07 15:18:58.652-04 | [1-369-2-6] | {&quot;isValid&quot;: true, &quot;hasChanged&quot;: false}
            6 | 1.2.276.0.7230010.3.1.2.346817280.24838.1557255338.294265 | NULL                                                      | DONE   | STUDY_CORRECT | 2019-05-07 15:02:27.528-04 |              1 | PROCESSED:                                                                         | 2019-05-07 15:02:27.648014-04 | 2019-05-07 15:02:30.356173-04 | 2019-05-07 15:02:20.373-04 | [1-369-2-5] | {&quot;isValid&quot;: true, &quot;hasChanged&quot;: true}
@@ -489,12 +488,12 @@ delayInHours                                     = 0
 &lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; Looking at the code in IocmAgentServiceImpl, it seems clear that the  sendImages key does not effect sendRisCorrections or sendDeletions&lt;/p&gt;
 
 &lt;p&gt;&lt;b&gt;End Result&lt;/b&gt; : All tests passed. Assigning the ticket to dev.&lt;/p&gt;</comment>
-                            <comment id="527277" author="robot-bc-rw" created="Thu, 9 May 2019 13:58:04 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-09 13:58:02 (push 72734):&lt;br/&gt;
+                <comment id="527277" author="robot-bc-rw" created="Thu, 9 May 2019 13:58:04 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-09 13:58:02 (push 72734):&lt;br/&gt;
   trunk      (fix)        (previous build: PACS-4-18-2-A13)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/8c142a4c8aee&quot; target=&quot;_blank&quot;&gt;intelepacs:8c142a4c8aee&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: bypass sendImages config key when manualSendCorrections is enabled&lt;/p&gt;</comment>
-                            <comment id="527295" author="robot-bc-rw" created="Thu, 9 May 2019 14:30:05 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-09 14:29:59 (push 72735):&lt;br/&gt;
+                <comment id="527295" author="robot-bc-rw" created="Thu, 9 May 2019 14:30:05 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-09 14:29:59 (push 72735):&lt;br/&gt;
   PACS-4-14-1 (fix)        (previous build: PACS-4-14-1-P507)&lt;br/&gt;
   PACS-4-15-1 (fix)        (previous build: PACS-4-15-1-P249)&lt;br/&gt;
   PACS-4-16-1 (fix)        (previous build: PACS-4-16-1-P376)&lt;br/&gt;
@@ -509,17 +508,17 @@ delayInHours                                     = 0
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/614297dbb769&quot; target=&quot;_blank&quot;&gt;intelepacs:614297dbb769&lt;/a&gt;  ambaye      PACS-4-17-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: bypass sendImages config key when manualSendCorrections is enabled&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/9864554c6dff&quot; target=&quot;_blank&quot;&gt;intelepacs:9864554c6dff&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: bypass sendImages config key when manualSendCorrections is enabled&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/0ddb44238c32&quot; target=&quot;_blank&quot;&gt;intelepacs:0ddb44238c32&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; dummy: dummy merge from PACS-4-18-1&lt;/p&gt;</comment>
-                            <comment id="527299" author="ambaye" created="Thu, 9 May 2019 14:35:42 -0400"  >&lt;p&gt;Description of the solution:&lt;br/&gt;
+                <comment id="527299" author="ambaye" created="Thu, 9 May 2019 14:35:42 -0400">&lt;p&gt;Description of the solution:&lt;br/&gt;
 We do not check anymore if sendImages policy is enabled before creating a manual correction activity for IocmAgent&lt;/p&gt;
 
 &lt;p&gt;Unit tests added or modified: &lt;br/&gt;
 Integration test added: C28499213&lt;/p&gt;</comment>
-                            <comment id="527547" author="robot-bc-rw" created="Fri, 10 May 2019 14:17:55 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-10 14:17:51 (push 72753):&lt;br/&gt;
+                <comment id="527547" author="robot-bc-rw" created="Fri, 10 May 2019 14:17:55 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-10 14:17:51 (push 72753):&lt;br/&gt;
   trunk      (fix)        (previous build: PACS-4-18-2-A14)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/8f4f61615956&quot; target=&quot;_blank&quot;&gt;intelepacs:8f4f61615956&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: revert sendImages config from false to true after running case C28499213&lt;/p&gt;</comment>
-                            <comment id="527564" author="robot-bc-rw" created="Fri, 10 May 2019 14:33:37 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-10 14:33:33 (push 72755):&lt;br/&gt;
+                <comment id="527564" author="robot-bc-rw" created="Fri, 10 May 2019 14:33:37 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-10 14:33:33 (push 72755):&lt;br/&gt;
   PACS-4-14-1 (fix)        (previous build: PACS-4-14-1-P508)&lt;br/&gt;
   PACS-4-15-1 (fix)        (previous build: PACS-4-15-1-P249)&lt;br/&gt;
   PACS-4-16-1 (fix)        (previous build: PACS-4-16-1-P377)&lt;br/&gt;
@@ -534,7 +533,7 @@ Integration test added: C28499213&lt;/p&gt;</comment>
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/2e5247f25b54&quot; target=&quot;_blank&quot;&gt;intelepacs:2e5247f25b54&lt;/a&gt;  ambaye      PACS-4-17-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: revert sendImages config from false to true after running case C28499213&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/06405f190e46&quot; target=&quot;_blank&quot;&gt;intelepacs:06405f190e46&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: revert sendImages config from false to true after running case C28499213&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/01e12dbaabf4&quot; target=&quot;_blank&quot;&gt;intelepacs:01e12dbaabf4&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; dummy: dummy merge from PACS-4-18-1&lt;/p&gt;</comment>
-                            <comment id="527988" author="robot-bc-rw" created="Tue, 14 May 2019 14:06:50 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-14 14:06:45 (push 72797):&lt;br/&gt;
+                <comment id="527988" author="robot-bc-rw" created="Tue, 14 May 2019 14:06:50 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-14 14:06:45 (push 72797):&lt;br/&gt;
   PACS-4-14-1 (fix)        (previous build: PACS-4-14-1-P508)&lt;br/&gt;
   PACS-4-15-1 (fix)        (previous build: PACS-4-15-1-P249)&lt;br/&gt;
   PACS-4-16-1 (fix)        (previous build: PACS-4-16-1-P379)&lt;br/&gt;
@@ -549,30 +548,30 @@ Integration test added: C28499213&lt;/p&gt;</comment>
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/ea01bd15da76&quot; target=&quot;_blank&quot;&gt;intelepacs:ea01bd15da76&lt;/a&gt;  ambaye      PACS-4-17-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: move iocm test that requires configuration change at method level to a new class&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/ff6d6e2824f2&quot; target=&quot;_blank&quot;&gt;intelepacs:ff6d6e2824f2&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: move iocm test that requires configuration change at method level to a new class&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/fe65062e3571&quot; target=&quot;_blank&quot;&gt;intelepacs:fe65062e3571&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: move iocm test that requires configuration change at method level to a new class&lt;/p&gt;</comment>
-                            <comment id="528279" author="dvu" created="Thu, 16 May 2019 13:02:02 -0400"  >&lt;p&gt;&lt;a href=&quot;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/243/&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/243/&lt;/a&gt;&lt;/p&gt;</comment>
-                            <comment id="528346" author="robot-bc-rw" created="Thu, 16 May 2019 17:39:31 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-16 17:39:29 (push 72834):&lt;br/&gt;
+                <comment id="528279" author="dvu" created="Thu, 16 May 2019 13:02:02 -0400">&lt;p&gt;&lt;a href=&quot;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/243/&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/243/&lt;/a&gt;&lt;/p&gt;</comment>
+                <comment id="528346" author="robot-bc-rw" created="Thu, 16 May 2019 17:39:31 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-16 17:39:29 (push 72834):&lt;br/&gt;
   trunk      (fix)        (previous build: PACS-4-18-2-A17)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/45754bc7f47e&quot; target=&quot;_blank&quot;&gt;intelepacs:45754bc7f47e&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: use move image to send image to archive and do only one config change&lt;/p&gt;</comment>
-                            <comment id="528354" author="robot-bc-rw" created="Thu, 16 May 2019 18:39:07 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-16 18:39:06 (push 72844):&lt;br/&gt;
+                <comment id="528354" author="robot-bc-rw" created="Thu, 16 May 2019 18:39:07 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-16 18:39:06 (push 72844):&lt;br/&gt;
   trunk      (fix)        (previous build: PACS-4-18-2-A17)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/1d1ab286cacc&quot; target=&quot;_blank&quot;&gt;intelepacs:1d1ab286cacc&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: change Predicate import to google common&lt;/p&gt;</comment>
-                            <comment id="528413" author="dvu" created="Fri, 17 May 2019 11:19:28 -0400"  >&lt;p&gt; Included in PACS-4-17-1-R19 (atlas 1.15.P41)&lt;/p&gt;</comment>
-                            <comment id="528435" author="adron.nguyen" created="Fri, 17 May 2019 11:29:49 -0400"  >&lt;p&gt;Setting this to &quot;In Progress&quot; since Alioune is still working on fixing the integration test that broke.&lt;/p&gt;</comment>
-                            <comment id="528436" author="adron.nguyen" created="Fri, 17 May 2019 11:30:20 -0400"  >&lt;p&gt;Ah crap&lt;/p&gt;</comment>
-                            <comment id="528437" author="adron.nguyen" created="Fri, 17 May 2019 11:32:07 -0400"  >&lt;p&gt;Urgh I can&apos;t reopen this because Duke already pushed Alioune&apos;s partial fix in PACS-4-17-1-R19 Atlas 1.15.P41&lt;/p&gt;</comment>
-                            <comment id="528439" author="adron.nguyen" created="Fri, 17 May 2019 11:38:13 -0400"  >&lt;p&gt;Just spoke to Duke, we can re-open this to let Alioune continue pushing code into this slip because it&apos;s only integration tests that Alioune is pushing.&lt;/p&gt;</comment>
-                            <comment id="528507" author="robot-bc-rw" created="Fri, 17 May 2019 15:57:14 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-17 15:57:12 (push 72851):&lt;br/&gt;
+                <comment id="528413" author="dvu" created="Fri, 17 May 2019 11:19:28 -0400">&lt;p&gt; Included in PACS-4-17-1-R19 (atlas 1.15.P41)&lt;/p&gt;</comment>
+                <comment id="528435" author="adron.nguyen" created="Fri, 17 May 2019 11:29:49 -0400">&lt;p&gt;Setting this to &quot;In Progress&quot; since Alioune is still working on fixing the integration test that broke.&lt;/p&gt;</comment>
+                <comment id="528436" author="adron.nguyen" created="Fri, 17 May 2019 11:30:20 -0400">&lt;p&gt;Ah crap&lt;/p&gt;</comment>
+                <comment id="528437" author="adron.nguyen" created="Fri, 17 May 2019 11:32:07 -0400">&lt;p&gt;Urgh I can&apos;t reopen this because Duke already pushed Alioune&apos;s partial fix in PACS-4-17-1-R19 Atlas 1.15.P41&lt;/p&gt;</comment>
+                <comment id="528439" author="adron.nguyen" created="Fri, 17 May 2019 11:38:13 -0400">&lt;p&gt;Just spoke to Duke, we can re-open this to let Alioune continue pushing code into this slip because it&apos;s only integration tests that Alioune is pushing.&lt;/p&gt;</comment>
+                <comment id="528507" author="robot-bc-rw" created="Fri, 17 May 2019 15:57:14 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-17 15:57:12 (push 72851):&lt;br/&gt;
   PACS-4-18-1 (fix)        (previous build: PACS-4-18-1-P39)&lt;br/&gt;
   trunk      (dummy)      (previous build: PACS-4-18-2-A18)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/072f9f6933f0&quot; target=&quot;_blank&quot;&gt;intelepacs:072f9f6933f0&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: use move image to send image to archive and do only one config change&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/41787d2ffbc4&quot; target=&quot;_blank&quot;&gt;intelepacs:41787d2ffbc4&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; dummy: dummy merge from PACS-4-18-1&lt;/p&gt;</comment>
-                            <comment id="528788" author="robot-bc-rw" created="Wed, 22 May 2019 12:00:42 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-22 12:00:31 (push 72903):&lt;br/&gt;
+                <comment id="528788" author="robot-bc-rw" created="Wed, 22 May 2019 12:00:42 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-22 12:00:31 (push 72903):&lt;br/&gt;
   PACS-4-14-1 (fix)        (previous build: PACS-4-14-1-P508)&lt;br/&gt;
   PACS-4-15-1 (fix)        (previous build: PACS-4-15-1-P249)&lt;br/&gt;
   PACS-4-16-1 (fix)        (previous build: PACS-4-16-1-P384)&lt;br/&gt;
@@ -585,78 +584,78 @@ Integration test added: C28499213&lt;/p&gt;</comment>
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/f85783bc9ac4&quot; target=&quot;_blank&quot;&gt;intelepacs:f85783bc9ac4&lt;/a&gt;  ambaye      PACS-4-16-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: use move image to send image to archive and do only one config change&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/041e10596e2e&quot; target=&quot;_blank&quot;&gt;intelepacs:041e10596e2e&lt;/a&gt;  ambaye      PACS-4-17-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: use move image to send image to archive and do only one config change&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/ad5d3fac7252&quot; target=&quot;_blank&quot;&gt;intelepacs:ad5d3fac7252&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; dummy: dummy merge from PACS-4-17-1&lt;/p&gt;</comment>
-                            <comment id="528816" author="robot-bc-rw" created="Wed, 22 May 2019 13:40:38 -0400"  >&lt;p&gt;Released by ambaye to master at 2019-05-22 13:40:36 (push 72905):&lt;br/&gt;
+                <comment id="528816" author="robot-bc-rw" created="Wed, 22 May 2019 13:40:38 -0400">&lt;p&gt;Released by ambaye to master at 2019-05-22 13:40:36 (push 72905):&lt;br/&gt;
   PACS-4-18-1 (fix)        (previous build: PACS-4-18-1-P41)&lt;br/&gt;
   trunk      (fix)        (previous build: PACS-4-18-2-A20)&lt;/p&gt;
 
 &lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/76318380ac75&quot; target=&quot;_blank&quot;&gt;intelepacs:76318380ac75&lt;/a&gt;  ambaye      PACS-4-18-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: disable test case C28499213 in order to wait for bug &lt;a href=&quot;https://jira.intelerad.com/browse/AF-466&quot; title=&quot;Integration test configuration API does not support mixing public and private configuration change at the same time &quot; class=&quot;issue-link&quot; data-issue-key=&quot;AF-466&quot;&gt;AF-466&lt;/a&gt; to be fixed&lt;br/&gt;
   &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/2a53074d8af5&quot; target=&quot;_blank&quot;&gt;intelepacs:2a53074d8af5&lt;/a&gt;  ambaye      trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-103951&quot; title=&quot;IocmAgent:  Does not send manualCorrections if sendImages is disabled. &quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-103951&quot;&gt;&lt;del&gt;IP-103951&lt;/del&gt;&lt;/a&gt; fix: disable test case C28499213 in order to wait for bug &lt;a href=&quot;https://jira.intelerad.com/browse/AF-466&quot; title=&quot;Integration test configuration API does not support mixing public and private configuration change at the same time &quot; class=&quot;issue-link&quot; data-issue-key=&quot;AF-466&quot;&gt;AF-466&lt;/a&gt; to be fixed&lt;/p&gt;</comment>
-                            <comment id="528820" author="ambaye" created="Wed, 22 May 2019 13:49:49 -0400"  >&lt;p&gt;Bug &lt;a href=&quot;https://jira.intelerad.com/browse/AF-466&quot; title=&quot;Integration test configuration API does not support mixing public and private configuration change at the same time &quot; class=&quot;issue-link&quot; data-issue-key=&quot;AF-466&quot;&gt;AF-466&lt;/a&gt; has been created because we suspect that the integration test api does not allow mixing public and private configuration change&lt;/p&gt;</comment>
-                            <comment id="528821" author="ambaye" created="Wed, 22 May 2019 13:51:03 -0400"  >&lt;p&gt;So the related integration test method C28499213 has been disabled&lt;/p&gt;</comment>
-                            <comment id="529040" author="dvu" created="Thu, 23 May 2019 13:50:01 -0400"  >&lt;p&gt;&lt;a href=&quot;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/260/&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/260/&lt;/a&gt; ( Tests passed)&lt;/p&gt;</comment>
-                            <comment id="529214" author="dvu" created="Fri, 24 May 2019 12:08:32 -0400"  >&lt;p&gt; Included in PACS-4-14-1-R63 (atlas 1.10.P53)&lt;/p&gt;</comment>
-                            <comment id="529294" author="dvu" created="Fri, 24 May 2019 15:14:37 -0400"  >&lt;p&gt;Included in PACS-4-16-1-R45 (atlas 1.14.P67)&lt;/p&gt;</comment>
-                    </comments>
-                <issuelinks>
-                            <issuelinktype id="10003">
+                <comment id="528820" author="ambaye" created="Wed, 22 May 2019 13:49:49 -0400">&lt;p&gt;Bug &lt;a href=&quot;https://jira.intelerad.com/browse/AF-466&quot; title=&quot;Integration test configuration API does not support mixing public and private configuration change at the same time &quot; class=&quot;issue-link&quot; data-issue-key=&quot;AF-466&quot;&gt;AF-466&lt;/a&gt; has been created because we suspect that the integration test api does not allow mixing public and private configuration change&lt;/p&gt;</comment>
+                <comment id="528821" author="ambaye" created="Wed, 22 May 2019 13:51:03 -0400">&lt;p&gt;So the related integration test method C28499213 has been disabled&lt;/p&gt;</comment>
+                <comment id="529040" author="dvu" created="Thu, 23 May 2019 13:50:01 -0400">&lt;p&gt;&lt;a href=&quot;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/260/&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://rnd-ci.intelerad.com/job/IntelePACS_IntegrationTest_CloudTesting/260/&lt;/a&gt; ( Tests passed)&lt;/p&gt;</comment>
+                <comment id="529214" author="dvu" created="Fri, 24 May 2019 12:08:32 -0400">&lt;p&gt; Included in PACS-4-14-1-R63 (atlas 1.10.P53)&lt;/p&gt;</comment>
+                <comment id="529294" author="dvu" created="Fri, 24 May 2019 15:14:37 -0400">&lt;p&gt;Included in PACS-4-16-1-R45 (atlas 1.14.P67)&lt;/p&gt;</comment>
+            </comments>
+            <issuelinks>
+                <issuelinktype id="10003">
                     <name>Relates</name>
-                                            <outwardlinks description="relates to">
-                                        <issuelink>
-            <issuekey id="154301">IP-104265</issuekey>
-        </issuelink>
-                            </outwardlinks>
-                                                                <inwardlinks description="relates to">
-                                        <issuelink>
-            <issuekey id="154744">AF-466</issuekey>
-        </issuelink>
-                            </inwardlinks>
-                                    </issuelinktype>
-                    </issuelinks>
-                <attachments>
-                    </attachments>
-                <subtasks>
-                    </subtasks>
-                <customfields>
-                                                <customfield id="customfield_12603" key="com.atlassian.jira.plugin.system.customfieldtypes:labels">
-                        <customfieldname>Affected Clients</customfieldname>
-                        <customfieldvalues>
-                                        <label>RDS</label>
-    
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <customfield id="customfield_13309" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
-                        <customfieldname>Client Code Count</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue><![CDATA[1.0]]></customfieldvalue>
+                    <outwardlinks description="relates to">
+                        <issuelink>
+                            <issuekey id="154301">IP-104265</issuekey>
+                        </issuelink>
+                    </outwardlinks>
+                    <inwardlinks description="relates to">
+                        <issuelink>
+                            <issuekey id="154744">AF-466</issuekey>
+                        </issuelink>
+                    </inwardlinks>
+                </issuelinktype>
+            </issuelinks>
+            <attachments>
+            </attachments>
+            <subtasks>
+            </subtasks>
+            <customfields>
+                <customfield id="customfield_12603" key="com.atlassian.jira.plugin.system.customfieldtypes:labels">
+                    <customfieldname>Affected Clients</customfieldname>
+                    <customfieldvalues>
+                        <label>RDS</label>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_13101" key="com.atlassian.jira.plugin.system.customfieldtypes:textarea">
-                        <customfieldname>Client Release Notes</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>The IocmAgent is skipping manual corrections when the sending images to the VNA option is disabled in the IocmAgent policy; therefore, corrected images are not being sent to the VNA.</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13309" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
+                    <customfieldname>Client Code Count</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue><![CDATA[1.0]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_13901" key="com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons">
-                        <customfieldname>Code Committed</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14502"><![CDATA[Yes]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13101" key="com.atlassian.jira.plugin.system.customfieldtypes:textarea">
+                    <customfieldname>Client Release Notes</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>The IocmAgent is skipping manual corrections when the sending images to the VNA option is disabled in the IocmAgent policy; therefore, corrected images are not being sent to the VNA.</customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                    <customfield id="customfield_13408" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
-                        <customfieldname>Component count</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue><![CDATA[1.0]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13901" key="com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons">
+                    <customfieldname>Code Committed</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14502"><![CDATA[Yes]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                        <customfield id="customfield_12702" key="com.atlassian.jira.plugin.system.customfieldtypes:textarea">
-                        <customfieldname>Description (template)</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>&lt;h4&gt;&lt;a name=&quot;RPMVersion&quot;&gt;&lt;/a&gt;RPM Version&lt;/h4&gt;
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13408" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
+                    <customfieldname>Component count</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue><![CDATA[1.0]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12702" key="com.atlassian.jira.plugin.system.customfieldtypes:textarea">
+                    <customfieldname>Description (template)</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>&lt;h4&gt;&lt;a name=&quot;RPMVersion&quot;&gt;&lt;/a&gt;RPM Version&lt;/h4&gt;
 
 &lt;h4&gt;&lt;a name=&quot;ISPClient%3A%3Cclientcode%3E&quot;&gt;&lt;/a&gt;ISP - Client : &lt;a href=&quot;https://inteleradprod.service-now.com/nav_to.do?uri=textsearch.do?sysparm_search=xxxx&quot; target=&quot;_blank&quot;&gt;xxxx&lt;/a&gt; - &amp;lt;client code&amp;gt;&lt;/h4&gt;
 
@@ -668,126 +667,126 @@ Integration test added: C28499213&lt;/p&gt;</comment>
 
 &lt;h4&gt;&lt;a name=&quot;Whathappenedinstead%3F%3A&quot;&gt;&lt;/a&gt;What happened instead?:&lt;/h4&gt;</customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_13600" key="com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary">
-                        <customfieldname>Development</customfieldname>
-                        <customfieldvalues>
-                            
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_12110" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Documentation</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14406"><![CDATA[Unrequired]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13600" key="com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary">
+                    <customfieldname>Development</customfieldname>
+                    <customfieldvalues>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                        <customfield id="customfield_10600" key="com.pyxis.greenhopper.jira:gh-epic-link">
-                        <customfieldname>Epic Link</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>IP-88920</customfieldvalue>
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                        <customfield id="customfield_12106" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Found In Production Code</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="12024"><![CDATA[+]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12110" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Documentation</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14406"><![CDATA[Unrequired]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                            <customfield id="customfield_12305" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>HW OK</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="12438"><![CDATA[-]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10600" key="com.pyxis.greenhopper.jira:gh-epic-link">
+                    <customfieldname>Epic Link</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>IP-88920</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12106" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Found In Production Code</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="12024"><![CDATA[+]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_12306" key="com.atlassian.jira.plugin.system.customfieldtypes:multiselect">
-                        <customfieldname>Hardware Issues</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="12439"><![CDATA[-]]></customfieldvalue>
-    
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                <customfield id="customfield_14002" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Key Roles Affected</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14606"><![CDATA[All]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12305" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>HW OK</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="12438"><![CDATA[-]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                                                                                                                                                                                                                            <customfield id="customfield_14001" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Probability of Reoccurrance</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14603"><![CDATA[Medium]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12306" key="com.atlassian.jira.plugin.system.customfieldtypes:multiselect">
+                    <customfieldname>Hardware Issues</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="12439"><![CDATA[-]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                        <customfield id="customfield_12800" key="com.atlassian.jira.plugin.system.customfieldtypes:multiselect">
-                        <customfieldname>RPM Upgrade List</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="13709"><![CDATA[IocmAgent]]></customfieldvalue>
-    
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_11800" key="com.pyxis.greenhopper.jira:gh-lexo-rank">
-                        <customfieldname>Rank</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>1|hzdm2x:89</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_14002" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Key Roles Affected</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14606"><![CDATA[All]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                <customfield id="customfield_10006" key="com.pyxis.greenhopper.jira:gh-global-rank">
-                        <customfieldname>Rank (Obsolete)</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>9223372036854775807</customfieldvalue>
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                            <customfield id="customfield_12102" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Release Notes</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="12017"><![CDATA[Approved]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_14001" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Probability of Reoccurrance</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14603"><![CDATA[Medium]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                        <customfield id="customfield_13815" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Risk</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14445"><![CDATA[Standard Change]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12800" key="com.atlassian.jira.plugin.system.customfieldtypes:multiselect">
+                    <customfieldname>RPM Upgrade List</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="13709"><![CDATA[IocmAgent]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                        <customfield id="customfield_13501" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Scrum Team</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="14403"><![CDATA[Backend Pirates]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_11800" key="com.pyxis.greenhopper.jira:gh-lexo-rank">
+                    <customfieldname>Rank</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>1|hzdm2x:89</customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                        <customfield id="customfield_11201" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
-                        <customfieldname>Severity</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue key="10802"><![CDATA[MAJOR]]></customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10006" key="com.pyxis.greenhopper.jira:gh-global-rank">
+                    <customfieldname>Rank (Obsolete)</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>9223372036854775807</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12102" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Release Notes</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="12017"><![CDATA[Approved]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                            <customfield id="customfield_10007" key="com.pyxis.greenhopper.jira:gh-sprint">
-                        <customfieldname>Sprint</customfieldname>
-                        <customfieldvalues>
-                                <customfieldvalue id="2032">Backend Pirates Sprint 15</customfieldvalue>
-    <customfieldvalue id="2052">Backend Pirates Sprint 16</customfieldvalue>
-    <customfieldvalue id="2068">Backend Pirates Sprint 17</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13815" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Risk</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14445"><![CDATA[Standard Change]]></customfieldvalue>
 
-                        </customfieldvalues>
-                    </customfield>
-                                                                                            <customfield id="customfield_10004" key="com.atlassian.jira.plugin.system.customfieldtypes:float">
-                        <customfieldname>Story Points</customfieldname>
-                        <customfieldvalues>
-                            <customfieldvalue>2.0</customfieldvalue>
-                        </customfieldvalues>
-                    </customfield>
-                                                                                                                                                                                                                                                                                                                                                                                                                                            </customfields>
-    </item>
-</channel>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13501" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Scrum Team</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14403"><![CDATA[Backend Pirates]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_11201" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Severity</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="10802"><![CDATA[MAJOR]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10007" key="com.pyxis.greenhopper.jira:gh-sprint">
+                    <customfieldname>Sprint</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue id="2032">Backend Pirates Sprint 15</customfieldvalue>
+                        <customfieldvalue id="2052">Backend Pirates Sprint 16</customfieldvalue>
+                        <customfieldvalue id="2068">Backend Pirates Sprint 17</customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10004" key="com.atlassian.jira.plugin.system.customfieldtypes:float">
+                    <customfieldname>Story Points</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>2.0</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+            </customfields>
+        </item>
+    </channel>
 </rss>
