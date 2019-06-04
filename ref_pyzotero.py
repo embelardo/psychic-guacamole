@@ -11,6 +11,7 @@ zotero = zotero.Zotero('5702932', 'user', api_key='AmVIV8y7deovLCBEE9mCRlcC')
 items = zotero.items(itemType='webpage', tag='Ticket', sort='title', limit=1)
 
 for item in items:
+    print()
     pp.pprint(item)
     print('---------- ' * 5)
     print("key         : {0}".format(item['key']))
@@ -20,7 +21,13 @@ for item in items:
     print("websiteTitle: {0}".format(item['data']['websiteTitle']))
     print("meta        : {0}".format(item['meta']))
     print("tags:")
-    # pp = pprint.PrettyPrinter(indent=6)
+
     pp.pprint(item['data']['tags'])
+    print('---------- ' * 5)
+
+    webpage_template = zotero.item_template('webpage')
+    print('WebPage template for creating new item')
+    print()
+    pp.pprint(webpage_template)
 
 print()
