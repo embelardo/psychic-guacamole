@@ -788,5 +788,483 @@ Integration test added: C28499213&lt;/p&gt;</comment>
                 </customfield>
             </customfields>
         </item>
+
+        <item>
+            <title>[IP-96232] intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages</title>
+            <link>https://jira.intelerad.com/browse/IP-96232</link>
+            <project id="11701" key="IP">IntelePACS</project>
+            <description>&lt;p&gt;When having a scons file such at this for Support/Scripts:&lt;/p&gt;
+
+&lt;p&gt;&lt;span class=&quot;error&quot;&gt;&amp;#91;...&amp;#93;&lt;/span&gt;&lt;br/&gt; &apos;supportUtilities.lib.zip&apos;,&lt;br/&gt; externalpackages=[(&apos;ims/listsupporttools&apos;,&apos;Support/Scripts/python&apos;),&lt;br/&gt;
+                  (&apos;ims/st&apos;,&apos;Support/Scripts/python&apos;),&lt;br/&gt;
+                  (&apos;ims/st/util&apos;,&apos;Support/Scripts/python&apos;)]&lt;/p&gt;
+
+&lt;p&gt;... making changes to files under Support/Scripts/python/ims/st/util, for example, does not trigger rebuilding of supportUtilities.lib.zip.&lt;/p&gt;
+
+&lt;p&gt;&lt;b&gt;Note that this can occur for any such lib.zip, for example, Support/Tools/supportTools.lib.zip is also affected.&lt;/b&gt;&lt;/p&gt;</description>
+            <key id="103415">IP-96232</key>
+            <summary>intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages</summary>
+            <type id="1" iconUrl="https://jira.intelerad.com/secure/viewavatar?size=xsmall&amp;avatarId=13903&amp;avatarType=issuetype">Bug</type>
+            <priority id="4" iconUrl="https://jira.intelerad.com/images/icons/priorities/major.svg">Medium</priority>
+            <status id="6" iconUrl="https://jira.intelerad.com/images/icons/statuses/closed.png" description="The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.">Closed</status>
+            <statusCategory id="3" key="done" colorName="green"/>
+            <resolution id="8">Done</resolution>
+            <assignee username="fhouillon">Francois Houillon</assignee>
+            <reporter username="jmason">John Mason</reporter>
+            <labels>
+            </labels>
+            <created>Tue, 22 Dec 2015 12:57:08 -0500</created>
+            <updated>Mon, 22 Apr 2019 13:18:47 -0400</updated>
+            <resolved>Thu, 15 Nov 2018 10:29:00 -0500</resolved>
+            <version>4-17-1</version>
+            <fixVersion>PRAE 1.2</fixVersion>
+            <fixVersion>4-6-1</fixVersion>
+            <component>Build</component>
+            <due></due>
+            <votes>0</votes>
+            <watches>4</watches>
+            <timeoriginalestimate seconds="0">0 minutes</timeoriginalestimate>
+            <timeestimate seconds="0">0 minutes</timeestimate>
+            <timespent seconds="152100">1 week, 2 hours, 15 minutes</timespent>
+            <comments>
+                <comment id="384041" author="long.vu" created="Tue, 22 Dec 2015 14:00:50 -0500">&lt;p&gt;Just to be clear, the bug is externalpackages are not added as dependency to libfile in PythonScripts() in &amp;lt;intelebase repo&amp;gt;/python/ims/scons/misc.py.&lt;/p&gt;
+
+&lt;p&gt;So when John changed externalpackages &amp;lt;intelepacs repo&amp;gt;/Support/Scripts/python/ims/st/util/terminal.py, libfile &amp;lt;intelepacs repo&amp;gt;/Support/Scripts/supportUtilities.lib.zip is not rebuilt.&lt;/p&gt;
+
+&lt;p&gt;This basically broke our continuous build testing triggered by each push.  This does not break full build (because all full builds start from scratch) so this do not impact our customers.&lt;/p&gt;</comment>
+                <comment id="384042" author="long.vu" created="Tue, 22 Dec 2015 14:02:15 -0500">&lt;p&gt;Current work-around is to manually delete Support/Scripts/supportUtilities.lib.zip on the build slave to force it to be rebuilt.&lt;/p&gt;</comment>
+                <comment id="414624" author="jmason" created="Fri, 17 Feb 2017 11:27:28 -0500">&lt;p&gt;This causes the build to fail any time changes are made to unit tests for Support/Scripts (for example) which depend changes to the library code (supportUtilities.lib.zip)  since the .zip doesn&apos;t get rebuilt.  This caused a failure today:&lt;/p&gt;
+
+
+&lt;div class=&quot;preformatted panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;preformattedContent panelContent&quot;&gt;
+&lt;pre&gt;scons: rebuilding `buildout/Support/Scripts/python/ims/dbgrow/test_dbgrower.stamp&apos; because `Support/Scripts/python/ims/dbgrow/test_dbgrower.py&apos; changed
+[2017-02-17 08:06:31] run_and_touch([&quot;buildout/Support/Scripts/python/ims/dbgrow/test_dbgrower.stamp&quot;], [&quot;Support/Scripts/python/ims/dbgrow/test_dbgrower.py&quot;, &quot;Support/Scripts/supportUtilities.lib.zip&quot;])
+[2017-02-17 08:06:32] cd Support/Scripts/python/ims &amp;amp;&amp;amp; /workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/intelebase/bin/build/runPythonTests.py dbgrow/test_dbgrower.py &amp;amp;&amp;amp; touch /workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/buildout/Support/Scripts/python/ims/dbgrow/test_dbgrower.stamp PYTHONPATH=/tmp/pytestlib.QmRwdN/pytestlib:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/Support/Scripts/python/ims/python:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/intelebase/python:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/buildout/lbe/lib/python2.6 /usr/bin/python2.6-intelerad dbgrow/test_dbgrower.py
+Traceback (most recent call last):
+  File &quot;dbgrow/test_dbgrower.py&quot;, line 11, in &amp;lt;module&amp;gt;
+    from ims.st.testutil import stub
+ImportError: cannot import name stub
+runPythonTests.py: error: FAIL: ran 1 test script(s), 1 failed:
+  dbgrow/test_dbgrower.py
+scons: *** Error 1
+scons: *** [buildout/Support/Scripts/python/ims/dbgrow/test_dbgrower.stamp] Error 1
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This occurred because the stub.py module which was added by the changeset was not present in the supportUtilities.lib.zip, since the latter hadn&apos;t been rebuilt after the changes were made.&lt;/p&gt;</comment>
+                <comment id="414827" author="jmason" created="Mon, 20 Feb 2017 10:19:24 -0500">
+&lt;div class=&quot;preformatted panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;preformattedContent panelContent&quot;&gt;
+&lt;pre&gt;Caused another failure today:
+
+
+[2017-02-20 10:15:41] run_and_touch([&quot;buildout/Support/Scripts/python/ims/st/db/tests/test_dbbase.stamp&quot;], [&quot;Support/Scripts/python/ims/st/db/tests/test_dbbase.py&quot;, &quot;Support/Scripts/supportUtilities.lib.zip&quot;])
+[2017-02-20 10:15:41] cd Support/Scripts/python/ims &amp;amp;&amp;amp; /workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/intelebase/bin/build/runPythonTests.py st/db/tests/test_dbbase.py &amp;amp;&amp;amp; touch /workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/buildout/Support/Scripts/python/ims/st/db/tests/test_dbbase.stamp PYTHONPATH=/tmp/pytestlib.s5SIUT/pytestlib:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/Support/Scripts/python/ims/python:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/intelebase/python:/workerroot/scons2/build.scons-2/build.master.PACS-4-14-1/buildout/lbe/lib/python2.6 /usr/bin/python2.6-intelerad st/db/tests/test_dbbase.py ...................FE.. ======================================================================
+ERROR: test_db_error_handler (__main__.TestHandlers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;st/db/tests/test_dbbase.py&quot;, line 225, in test_db_error_handler exceptmsg=&quot;%s error&quot; % engine)
+  File &quot;./pylib.P428Ds/install/2.6/ims/st/db/dbbase.py&quot;, line 135, in _db_error_handler
+AttributeError: &apos;NoneType&apos; object has no attribute &apos;connection&apos; ======================================================================
+FAIL: test_db_connection_handler (__main__.TestHandlers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;st/db/tests/test_dbbase.py&quot;, line 132, in test_db_connection_handler
+    self.assertTrue(str(err).startswith(&apos;Reached db connect &apos;
+AssertionError
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+                </comment>
+                <comment id="416222" author="jmason" created="Tue, 28 Feb 2017 10:59:12 -0500">&lt;p&gt;Another build failure today due to this.&lt;/p&gt;</comment>
+                <comment id="416865" author="jmason" created="Mon, 6 Mar 2017 09:28:04 -0500">&lt;p&gt;Occurred again today.&lt;/p&gt;</comment>
+                <comment id="417281" author="mike.baum" created="Wed, 8 Mar 2017 17:30:32 -0500">&lt;p&gt;Happened twice for me on builds: &lt;br/&gt;
+&lt;a href=&quot;https://forge.intelerad.com/bbot/builders/scons-1/builds/955&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;955&lt;/a&gt; &lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+--[ BEGIN ERROR REGION 1 (lines 1160 .. 1182) ]-----------------------------------------------------
+[2017-03-08 17:08:04] run_and_touch([&lt;span class=&quot;code-quote&quot;&gt;&quot;buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp&quot;&lt;/span&gt;], [&lt;span class=&quot;code-quote&quot;&gt;&quot;Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.py&quot;&lt;/span&gt;, &lt;span class=&quot;code-quote&quot;&gt;&quot;Support/Scripts/supportUtilities.lib.zip&quot;&lt;/span&gt;])
+[2017-03-08 17:08:04] cd Support/Scripts/python/ims &amp;amp;&amp;amp; /workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/intelebase/bin/build/runPythonTests.py st/pacs/test_pacsprocessinfo.py &amp;amp;&amp;amp; touch /workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp PYTHONPATH=/tmp/pytestlib.HGeBW4/pytestlib:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/Support/Scripts/python/ims/python:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/intelebase/python:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/buildout/lbe/lib/python2.6 /usr/bin/python2.6-intelerad st/pacs/test_pacsprocessinfo.py .E... ======================================================================
+ERROR: test_fdlink_destination (__main__.TestPacsProcessInfo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &lt;span class=&quot;code-quote&quot;&gt;&quot;st/pacs/test_pacsprocessinfo.py&quot;&lt;/span&gt;, line 102, in test_fdlink_destination
+    self.assertEqual(self.ppi._fdlink_destination(linkfile),
+AttributeError: &lt;span class=&quot;code-quote&quot;&gt;&apos;PacsProcessInfo&apos;&lt;/span&gt; object has no attribute &lt;span class=&quot;code-quote&quot;&gt;&apos;_fdlink_destination&apos;&lt;/span&gt;
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+FAILED (errors=1)
+runPythonTests.py: error: FAIL: ran 1 test script(s), 1 failed:
+  st/pacs/test_pacsprocessinfo.py
+scons: *** Error 1
+scons: *** [buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp] Error 1
+Command execution time: buildout/generated/com/intelerad/build: 0.000012 seconds
+Command execution time: buildout/generated/com/intelerad: 0.000004 seconds
+Command execution time: buildout/generated/com: 0.000005 seconds
+--[ END ERROR REGION 1 ]----------------------------------------------------------------------------
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and &lt;a href=&quot;https://forge.intelerad.com/bbot/builders/scons-1/builds/956&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;956&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+--[ BEGIN ERROR REGION 1 (lines 976 .. 998) ]-------------------------------------------------------
+[2017-03-08 17:20:06] run_and_touch([&lt;span class=&quot;code-quote&quot;&gt;&quot;buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp&quot;&lt;/span&gt;], [&lt;span class=&quot;code-quote&quot;&gt;&quot;Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.py&quot;&lt;/span&gt;, &lt;span class=&quot;code-quote&quot;&gt;&quot;Support/Scripts/supportUtilities.lib.zip&quot;&lt;/span&gt;])
+[2017-03-08 17:20:06] cd Support/Scripts/python/ims &amp;amp;&amp;amp; /workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/intelebase/bin/build/runPythonTests.py st/pacs/test_pacsprocessinfo.py &amp;amp;&amp;amp; touch /workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp PYTHONPATH=/tmp/pytestlib.tCqmRk/pytestlib:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/Support/Scripts/python/ims/python:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/intelebase/python:/workerroot/scons1/build.scons-1/build.devel-iv.&lt;span class=&quot;code-keyword&quot;&gt;default&lt;/span&gt;/buildout/lbe/lib/python2.6 /usr/bin/python2.6-intelerad st/pacs/test_pacsprocessinfo.py .E... ======================================================================
+ERROR: test_fdlink_destination (__main__.TestPacsProcessInfo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &lt;span class=&quot;code-quote&quot;&gt;&quot;st/pacs/test_pacsprocessinfo.py&quot;&lt;/span&gt;, line 102, in test_fdlink_destination
+    self.assertEqual(self.ppi._fdlink_destination(linkfile),
+AttributeError: &lt;span class=&quot;code-quote&quot;&gt;&apos;PacsProcessInfo&apos;&lt;/span&gt; object has no attribute &lt;span class=&quot;code-quote&quot;&gt;&apos;_fdlink_destination&apos;&lt;/span&gt;
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.006s
+
+FAILED (errors=1)
+runPythonTests.py: error: FAIL: ran 1 test script(s), 1 failed:
+  st/pacs/test_pacsprocessinfo.py
+scons: *** Error 1
+scons: *** [buildout/Support/Scripts/python/ims/st/pacs/test_pacsprocessinfo.stamp] Error 1
+Command execution time: buildout/generated/com/intelerad/build: 0.000016 seconds
+Command execution time: buildout/generated/com/intelerad: 0.000007 seconds
+Command execution time: buildout/generated/com: 0.000007 seconds
+--[ END ERROR REGION 1 ]-
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;</comment>
+                <comment id="421437" author="jmason" created="Fri, 7 Apr 2017 09:38:15 -0400">&lt;p&gt;Occurred again today for the push for &lt;a href=&quot;https://jira.intelerad.com/browse/IP-76886&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;IP-76886&lt;/a&gt;&lt;/p&gt;</comment>
+                <comment id="490002" author="rami.bechara" created="Tue, 14 Aug 2018 15:30:23 -0400">&lt;p&gt;Closing as part of backlog cleanup. Will open new issue if needed in the future.&lt;/p&gt;</comment>
+                <comment id="492301" author="jmason" created="Thu, 30 Aug 2018 15:31:43 -0400">&lt;p&gt;Occurred again today in &lt;a href=&quot;https://rnd-buildbot.intelerad.com/bbot/builders/scons-1/builds/4472/steps/scons-1&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://rnd-buildbot.intelerad.com/bbot/builders/scons-1/builds/4472/steps/scons-1&lt;/a&gt;.&lt;/p&gt;</comment>
+                <comment id="492323" author="alain.harnois" created="Thu, 30 Aug 2018 16:03:07 -0400">&lt;p&gt;Do do the cleanup repeat the following command on these hosts: rnd-worker20-1, rnd-worker20-2, rnd-worker20-3, rnd-worker20-4:&lt;/p&gt;
+
+&lt;div class=&quot;preformatted panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;preformattedContent panelContent&quot;&gt;
+&lt;pre&gt;locate supportUtilities.lib.zip supportTools.lib.zip | xargs sudo rm
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;</comment>
+                <comment id="492324" author="alain.harnois" created="Thu, 30 Aug 2018 16:04:06 -0400">&lt;p&gt;Cleanup completed on all 4 continuous builder &lt;/p&gt;</comment>
+                <comment id="492328" author="alain.harnois" created="Thu, 30 Aug 2018 16:07:31 -0400">&lt;p&gt;Close it by mistake.&lt;/p&gt;</comment>
+                <comment id="499644" author="fhouillon" created="Fri, 26 Oct 2018 18:17:04 -0400">&lt;p&gt;Hi, we&apos;ve got the same issue (cf &lt;a href=&quot;https://jira.intelerad.com/browse/IP-95757&quot; title=&quot;Scons inconsistent results with Databases/Databases/DicomEvidence rpms&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-95757&quot;&gt;&lt;del&gt;IP-95757&lt;/del&gt;&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;It seems that the issue is there :&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;File: &lt;tt&gt;intelebase/python/ims/scons/misc.py&lt;/tt&gt;&lt;/li&gt;
+	&lt;li&gt;Function: &lt;tt&gt;_pythonlibrary&lt;/tt&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The variable &lt;tt&gt;externalsources&lt;/tt&gt; is always empty because files provided by the code:&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+os.path.join(root, &lt;span class=&quot;code-keyword&quot;&gt;package&lt;/span&gt;.replace(&lt;span class=&quot;code-quote&quot;&gt;&quot;.&quot;&lt;/span&gt;, &lt;span class=&quot;code-quote&quot;&gt;&quot;/&quot;&lt;/span&gt;), &lt;span class=&quot;code-quote&quot;&gt;&quot;*.py&quot;&lt;/span&gt;)
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt; are not found. For example, for Databases/Databases/DicomEvidence/dicomevidence.scons, the value is :&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+Databases/Databases/DicomEvidence/Scripts/python/ims/dicommaster/*.py
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Files are not found because I guess the path is related to the top-level SConstruct, not the SConscript file.&lt;br/&gt;
+I just added a &quot;#&quot; and it fixes the issue:&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+os.path.join(&lt;span class=&quot;code-quote&quot;&gt;&apos;#&apos;&lt;/span&gt;, root, &lt;span class=&quot;code-keyword&quot;&gt;package&lt;/span&gt;.replace(&lt;span class=&quot;code-quote&quot;&gt;&quot;.&quot;&lt;/span&gt;, &lt;span class=&quot;code-quote&quot;&gt;&quot;/&quot;&lt;/span&gt;), &lt;span class=&quot;code-quote&quot;&gt;&quot;*.py&quot;&lt;/span&gt;)
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Don&apos;t know if it is the right way to fix that (I&apos;m not a scons expert), so not fixing it right now, but feel free to ask me info.&lt;/p&gt;</comment>
+                <comment id="500338" author="fhouillon" created="Fri, 2 Nov 2018 14:27:13 -0400">&lt;p&gt;Exchanges with &lt;a href=&quot;https://jira.intelerad.com/secure/ViewProfile.jspa?name=peterg&quot; class=&quot;user-hover&quot; rel=&quot;peterg&quot;&gt;Peter Georgiakakis&lt;/a&gt; about the code change review :&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;When you add a # at the beginning of the path it tell scons that the path starts at the root where the SConstruct file exists. &lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Yes, and I checked that: each scons script that uses the &quot;externalpackages&quot; parameter are using a root path.&lt;br/&gt;
+And now thinking about it looks logical because it is named &quot;external&quot; &lt;img class=&quot;emoticon&quot; src=&quot;https://jira.intelerad.com/images/icons/emoticons/wink.png&quot; height=&quot;16&quot; width=&quot;16&quot; align=&quot;absmiddle&quot; alt=&quot;&quot; border=&quot;0&quot;/&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;Don&apos;t know if this is the correct behavior since it may pick up more files then you intend.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;That&apos;s a very good point. But actually this variable is always empty!&lt;br/&gt;
+Currently externalpackages is passed directly to the intelebase/bin/build/createPythonLib, so the whole package is already &quot;scanned&quot; and added to the zip file.&lt;br/&gt;
+The loop with the Glob function seems to add only *.py scripts.&lt;br/&gt;
+And I guess it is the purpose of the loop : add dependy to all the files that will be in the zip file.&lt;br/&gt;
+Definitively I have to check all zip file before and after the fix.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;did you track the places from where this misc.py file is accessed?  Is this what is expected by that code.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Yes, I tracked all scons scripts that uses this &quot;externalpackages&quot; parameter (grep -r --include=&quot;*.scons&quot; externalpackages).&lt;br/&gt;
+On PACS/atlas/cds, there are 12 scons files.&lt;br/&gt;
+I tested update one some files for some modules and I have the same behaviour : zip file is not updated. And with the fix, it is updated.&lt;br/&gt;
+I added a trace to display the externalsources, it is always empty, and I don&apos;t think it is what it is expected.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;could you instead prefix the # in the code that supplies the &apos;root&apos; value?&lt;br/&gt;
+I see that the function PythonScripts is defined on line 35 and it takes a parameter externalpackages.  You should track the caller of that function and see about adding the # to the elements of that array instead.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;I tried this solution.&lt;br/&gt;
+It works perfectly for the loop that populates the externalsources.&lt;br/&gt;
+But it causes the intelebase/bin/build/createPythonLib raising an error because it doesn&apos;t understand the # in the path...&lt;br/&gt;
+I could remove the &quot;#&quot; before calling createPythonLib, but it looks a bit weird to me.&lt;br/&gt;
+And with this solution, we will have to fix every scons file to add the #.&lt;/p&gt;</comment>
+                <comment id="500339" author="fhouillon" created="Fri, 2 Nov 2018 14:36:13 -0400">&lt;p&gt;Tests to be done :&lt;br/&gt;
+1. Prove that the change impact only to some scon files, so the fix will have no impact on other builds, and the test can focus on those scon files &lt;br/&gt;
+2. Ensure that the change doesn&apos;t change zip files produced on every impacted scons module&lt;br/&gt;
+3. As the change is in the intelebase &quot;shared&quot; repo, ensure that the change is &lt;b&gt;backward compatible&lt;/b&gt; on all PACS version (especially older version than PACS-4-14-1)&lt;/p&gt;</comment>
+                <comment id="500494" author="fhouillon" created="Mon, 5 Nov 2018 14:22:47 -0500">&lt;p&gt;1. Done&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;added the code
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;&lt;span class=&quot;code-keyword&quot;&gt;if&lt;/span&gt; not externalsources:
+    raise Exception(&lt;span class=&quot;code-quote&quot;&gt;&apos;externalsources not EMPTY!&apos;&lt;/span&gt;)
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt; at &lt;tt&gt;python/ims/scons/misc.py:124&lt;/tt&gt;&lt;/p&gt;&lt;/li&gt;
+	&lt;li&gt;run scons on the whole project.&lt;br/&gt;
+No exception =&amp;gt; prove that the code that fills externalsources is never called&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;2. Done &lt;br/&gt;
+Rebuilt modules that use the &quot;externalpackages&quot; parameter (or are dependant). Can be found with&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+grep -l -r --include=&lt;span class=&quot;code-quote&quot;&gt;&quot;*.scons&quot;&lt;/span&gt; externalpackages
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The RPM produced without and with the fix are exactly the same.&lt;br/&gt;
+Command used :&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+# Todo with and without the fix
+scons -c
+find . -name &lt;span class=&quot;code-quote&quot;&gt;&quot;*.rpm&quot;&lt;/span&gt; | xargs rm
+find . -name &lt;span class=&quot;code-quote&quot;&gt;&quot;*.pyc&quot;&lt;/span&gt; | xargs rm
+scons RIS/HL7/Hl7FileSender --make-rpms
+scons Infrastructure/Analytics --make-rpms
+scons RIS/modalityWorklist --make-rpms
+scons components/patientportalservice --make-rpms
+scons components/dicomresourceprovider --make-rpms
+scons components/hl7apps --make-rpms
+scons components/analytics --make-rpms
+scons components/universalviewerservice --make-rpms
+scons Databases/Databases/DicomEvidence --make-rpms
+scons PACS/Scripts --make-rpms
+scons Infrastructure/TigaseIntegration --make-rpms
+scons Support/Tools --make-rpms
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;RPM compare did with the tool pkgdiff :&lt;/p&gt;
+&lt;div class=&quot;code panel&quot; style=&quot;border-width: 1px;&quot;&gt;&lt;div class=&quot;codeContent panelContent&quot;&gt;
+&lt;pre class=&quot;code-java&quot;&gt;
+# Copy RPM files (&lt;span class=&quot;code-keyword&quot;&gt;do&lt;/span&gt; it &lt;span class=&quot;code-keyword&quot;&gt;for&lt;/span&gt; old and &lt;span class=&quot;code-keyword&quot;&gt;new&lt;/span&gt;)
+find . -name &lt;span class=&quot;code-quote&quot;&gt;&quot;*.rpm&quot;&lt;/span&gt; | grep -v /RPMS/ | xargs cp -t ~/compare/&lt;span class=&quot;code-keyword&quot;&gt;new&lt;/span&gt;/
+# Build reports
+&lt;span class=&quot;code-keyword&quot;&gt;for&lt;/span&gt; i in ~/compare/&lt;span class=&quot;code-keyword&quot;&gt;new&lt;/span&gt;/*.rpm; &lt;span class=&quot;code-keyword&quot;&gt;do&lt;/span&gt; echo $i; base=`basename $i`; pkgdiff ~/compare/&lt;span class=&quot;code-keyword&quot;&gt;new&lt;/span&gt;/$base ~/compare/old/$base; done
+# Extract percentage diff
+grep -r -A 3 &lt;span class=&quot;code-quote&quot;&gt;&quot;lib.zip&quot;&lt;/span&gt; pkgdiff_reports | grep value
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;No diff found (0 %).&lt;/p&gt;
+
+&lt;p&gt;3. Done&lt;br/&gt;
+Rebuild :&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;PACS-4-6-1&lt;/li&gt;
+	&lt;li&gt;PACS-4-12-1&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;No error.&lt;br/&gt;
+Compare RPMs for module PACS/Scripts (Same method as above).&lt;br/&gt;
+No differences.&lt;/p&gt;</comment>
+                <comment id="501131" author="robot-bc-rw" created="Mon, 12 Nov 2018 09:20:12 -0500">&lt;p&gt;Released by fhouillon to intelebase at 2018-11-12 09:20:12 (push 70076):&lt;br/&gt;
+  trunk      (fix)        (previous build: None)&lt;/p&gt;
+
+&lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelebase/rev/1f8d723fb306&quot; target=&quot;_blank&quot;&gt;intelebase:1f8d723fb306&lt;/a&gt;  fhouillon   trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: add a # before externalpackages path to be considered as a source&lt;/p&gt;</comment>
+                <comment id="501135" author="robot-bc-rw" created="Mon, 12 Nov 2018 09:31:42 -0500">&lt;p&gt;Released by fhouillon to master at 2018-11-12 09:31:34 (push 70077):&lt;br/&gt;
+  PACS-4-10-1 (fix)        (previous build: PACS-4-10-1-P309)&lt;br/&gt;
+  PACS-4-11-1 (fix)        (previous build: PACS-4-11-1-P291)&lt;br/&gt;
+  PACS-4-12-1 (fix)        (previous build: PACS-4-12-1-P581)&lt;br/&gt;
+  PACS-4-14-1 (fix)        (previous build: PACS-4-14-1-P449)&lt;br/&gt;
+  PACS-4-15-1 (fix)        (previous build: PACS-4-15-1-P229)&lt;br/&gt;
+  PACS-4-16-1 (fix)        (previous build: PACS-4-16-1-P271)&lt;br/&gt;
+  PACS-4-17-1 (fix)        (previous build: PACS-4-17-1-P90)&lt;br/&gt;
+  PACS-4-6-1 (fix)        (previous build: PACS-4-6-1-P364)&lt;br/&gt;
+  PACS-4-8-1 (fix)        (previous build: PACS-4-8-1-P279)&lt;br/&gt;
+  trunk      (fix)        (previous build: PACS-4-17-2-A94)&lt;/p&gt;
+
+&lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/6670b02d02d1&quot; target=&quot;_blank&quot;&gt;intelepacs:6670b02d02d1&lt;/a&gt;  fhouillon   PACS-4-6-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/118fb0fe06d9&quot; target=&quot;_blank&quot;&gt;intelepacs:118fb0fe06d9&lt;/a&gt;  fhouillon   PACS-4-8-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/19a019643978&quot; target=&quot;_blank&quot;&gt;intelepacs:19a019643978&lt;/a&gt;  fhouillon   PACS-4-10-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/9378f60fa5f4&quot; target=&quot;_blank&quot;&gt;intelepacs:9378f60fa5f4&lt;/a&gt;  fhouillon   PACS-4-11-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/d69727d2db41&quot; target=&quot;_blank&quot;&gt;intelepacs:d69727d2db41&lt;/a&gt;  fhouillon   PACS-4-12-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/26d762f11e2b&quot; target=&quot;_blank&quot;&gt;intelepacs:26d762f11e2b&lt;/a&gt;  fhouillon   PACS-4-14-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/38b87e631059&quot; target=&quot;_blank&quot;&gt;intelepacs:38b87e631059&lt;/a&gt;  fhouillon   PACS-4-15-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/fc75f16666bf&quot; target=&quot;_blank&quot;&gt;intelepacs:fc75f16666bf&lt;/a&gt;  fhouillon   PACS-4-16-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/6da58b62e65c&quot; target=&quot;_blank&quot;&gt;intelepacs:6da58b62e65c&lt;/a&gt;  fhouillon   PACS-4-17-1  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/intelepacs/union/rev/d0ac0ac1cd7c&quot; target=&quot;_blank&quot;&gt;intelepacs:d0ac0ac1cd7c&lt;/a&gt;  fhouillon   trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;/p&gt;</comment>
+                <comment id="501553" author="robot-bc-rw" created="Thu, 15 Nov 2018 10:00:30 -0500">&lt;p&gt;Released by fhouillon to cds at 2018-11-15 10:00:29 (push 70161):&lt;br/&gt;
+  cds-1.2    (fix)        (previous build: cds-1.2.P68)&lt;br/&gt;
+  cds-1.3    (fix)        (previous build: cds-1.3.P33)&lt;br/&gt;
+  cds-1.5    (fix)        (previous build: cds-1.5.P26)&lt;br/&gt;
+  cds-1.6    (fix)        (previous build: cds-1.6.P10)&lt;br/&gt;
+  cds-1.7    (fix)        (previous build: cds-1.7.P9)&lt;br/&gt;
+  cds-1.8    (fix)        (previous build: cds-1.8.P5)&lt;br/&gt;
+  trunk      (fix)        (previous build: cds-1.9.A2)&lt;/p&gt;
+
+&lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/6354f362f8b7&quot; target=&quot;_blank&quot;&gt;cds:6354f362f8b7&lt;/a&gt;  fhouillon   cds-1.2     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/0da948cc654a&quot; target=&quot;_blank&quot;&gt;cds:0da948cc654a&lt;/a&gt;  fhouillon   cds-1.3     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/b96c78067895&quot; target=&quot;_blank&quot;&gt;cds:b96c78067895&lt;/a&gt;  fhouillon   cds-1.5     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/7da0b0673cf6&quot; target=&quot;_blank&quot;&gt;cds:7da0b0673cf6&lt;/a&gt;  fhouillon   cds-1.6     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/e08b68d5958b&quot; target=&quot;_blank&quot;&gt;cds:e08b68d5958b&lt;/a&gt;  fhouillon   cds-1.7     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/8a59efdb07ac&quot; target=&quot;_blank&quot;&gt;cds:8a59efdb07ac&lt;/a&gt;  fhouillon   cds-1.8     &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/cds/rev/f30a0442ed5e&quot; target=&quot;_blank&quot;&gt;cds:f30a0442ed5e&lt;/a&gt;  fhouillon   trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;/p&gt;</comment>
+                <comment id="501562" author="robot-bc-rw" created="Thu, 15 Nov 2018 10:21:25 -0500">&lt;p&gt;Released by fhouillon to atlas at 2018-11-15 10:21:24 (push 70162):&lt;br/&gt;
+  atlas-1.13 (fix)        (previous build: atlas-1.13.P32)&lt;br/&gt;
+  atlas-1.14 (fix)        (previous build: atlas-1.14.P47)&lt;br/&gt;
+  atlas-1.15 (fix)        (previous build: atlas-1.15.P28)&lt;br/&gt;
+  trunk      (fix)        (previous build: atlas-1.16.A3)&lt;/p&gt;
+
+&lt;p&gt;Relevant changesets in this release:&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/atlas/rev/6cd5c10fd2e4&quot; target=&quot;_blank&quot;&gt;atlas:6cd5c10fd2e4&lt;/a&gt;  fhouillon   atlas-1.13  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/atlas/rev/2608eabcbdb2&quot; target=&quot;_blank&quot;&gt;atlas:2608eabcbdb2&lt;/a&gt;  fhouillon   atlas-1.14  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/atlas/rev/d31964e07f92&quot; target=&quot;_blank&quot;&gt;atlas:d31964e07f92&lt;/a&gt;  fhouillon   atlas-1.15  &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;br/&gt;
+  &lt;a href=&quot;https://forge.intelerad.com/hg/atlas/rev/667cfd669947&quot; target=&quot;_blank&quot;&gt;atlas:667cfd669947&lt;/a&gt;  fhouillon   trunk       &lt;a href=&quot;https://jira.intelerad.com/browse/IP-96232&quot; title=&quot;intelebase: scons:  Failure to rebuild python lib.zip after changes made to files included in externalpackages&quot; class=&quot;issue-link&quot; data-issue-key=&quot;IP-96232&quot;&gt;&lt;del&gt;IP-96232&lt;/del&gt;&lt;/a&gt; fix: .hgsubstate: bump intelebase to match&lt;/p&gt;</comment>
+                <comment id="501565" author="fhouillon" created="Thu, 15 Nov 2018 10:25:32 -0500">&lt;p&gt;Documentation updated : &lt;a href=&quot;https://docs.google.com/document/d/1C_RppOBK8-BHwzsJ3373-fvOk84faSpp7KK8YfWvym8/edit#heading=h.38vlkmmb5y6c&quot; class=&quot;external-link&quot; rel=&quot;nofollow&quot;&gt;https://docs.google.com/document/d/1C_RppOBK8-BHwzsJ3373-fvOk84faSpp7KK8YfWvym8/edit#heading=h.38vlkmmb5y6c&lt;/a&gt;&lt;/p&gt;</comment>
+                <comment id="501569" author="fhouillon" created="Thu, 15 Nov 2018 10:29:37 -0500">&lt;p&gt;intelebase updated and bumped to latest in all 3 repos :&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;PACS (from version PACS-4-6-1)&lt;/li&gt;
+	&lt;li&gt;cds (from version cds-1.2)&lt;/li&gt;
+	&lt;li&gt;atlas (from version atlas-1.13)&lt;/li&gt;
+&lt;/ul&gt;
+                </comment>
+                <comment id="501570" author="fhouillon" created="Thu, 15 Nov 2018 10:29:44 -0500">&lt;p&gt;This defect has been verified by the developer at the time of code change plus the execution of development testing. In addition, automated and/or manual integration testing done by QA also verifies that this issue has been resolved.&lt;/p&gt;
+
+&lt;p&gt;In certain cases the deployment team during test farm creation will be the group responsible for verification during routine deployment testing.&lt;/p&gt;
+
+&lt;p&gt;Marking CLOSED. &lt;/p&gt;</comment>
+            </comments>
+            <issuelinks>
+                <issuelinktype id="10000">
+                    <name>Blocks</name>
+                    <outwardlinks description="blocks">
+                        <issuelink>
+                            <issuekey id="27491">IP-88656</issuekey>
+                        </issuelink>
+                    </outwardlinks>
+                </issuelinktype>
+                <issuelinktype id="10003">
+                    <name>Relates</name>
+                    <outwardlinks description="relates to">
+                        <issuelink>
+                            <issuekey id="144337">IP-95757</issuekey>
+                        </issuelink>
+                    </outwardlinks>
+                </issuelinktype>
+            </issuelinks>
+            <attachments>
+                <attachment id="47618" name="intelebase.patch" size="596" author="fhouillon" created="Wed, 31 Oct 2018 10:34:38 -0400"/>
+            </attachments>
+            <subtasks>
+            </subtasks>
+            <customfields>
+                <customfield id="customfield_13309" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
+                    <customfieldname>Client Code Count</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue><![CDATA[0.0]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13408" key="com.onresolve.jira.groovy.groovyrunner:scripted-field">
+                    <customfieldname>Component count</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue><![CDATA[1.0]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13600" key="com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary">
+                    <customfieldname>Development</customfieldname>
+                    <customfieldvalues>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12110" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Documentation</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14406"><![CDATA[Unrequired]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10600" key="com.pyxis.greenhopper.jira:gh-epic-link">
+                    <customfieldname>Epic Link</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>IP-95447</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_11904" key="com.atlassian.jira.plugin.system.customfieldtypes:textfield">
+                    <customfieldname>External issue ID</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>55128</customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12800" key="com.atlassian.jira.plugin.system.customfieldtypes:multiselect">
+                    <customfieldname>RPM Upgrade List</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="13000"><![CDATA[NO_RPMS]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_11800" key="com.pyxis.greenhopper.jira:gh-lexo-rank">
+                    <customfieldname>Rank</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>2|hzdt67:</customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10006" key="com.pyxis.greenhopper.jira:gh-global-rank">
+                    <customfieldname>Rank (Obsolete)</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>9223372036854775807</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_12102" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Release Notes</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14407"><![CDATA[Unrequired]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_13501" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Scrum Team</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="14112"><![CDATA[Backend Raptors]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_11201" key="com.atlassian.jira.plugin.system.customfieldtypes:select">
+                    <customfieldname>Severity</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue key="10804"><![CDATA[INTERNAL]]></customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10007" key="com.pyxis.greenhopper.jira:gh-sprint">
+                    <customfieldname>Sprint</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue id="1666">BC 2018 - Sprint 16</customfieldvalue>
+                        <customfieldvalue id="1822">Raptors 2018 - Sprint 24</customfieldvalue>
+                        <customfieldvalue id="1846">Raptors 2018 - Sprint 25</customfieldvalue>
+
+                    </customfieldvalues>
+                </customfield>
+                <customfield id="customfield_10004" key="com.atlassian.jira.plugin.system.customfieldtypes:float">
+                    <customfieldname>Story Points</customfieldname>
+                    <customfieldvalues>
+                        <customfieldvalue>1.0</customfieldvalue>
+                    </customfieldvalues>
+                </customfield>
+            </customfields>
+        </item>
     </channel>
 </rss>
