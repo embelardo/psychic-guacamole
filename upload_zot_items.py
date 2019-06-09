@@ -116,7 +116,7 @@ def parse_arguments():
     parser.add_argument(
         '--tag', action='append',
         dest='common_tags',
-        default=['jira_ticket'],
+        default=['ticket_jira'],
         help='command tags to assign to all uploaded items')
     args = parser.parse_args()
     log.debug('Arguments Passed (start) %s' % ('-' * 68))
