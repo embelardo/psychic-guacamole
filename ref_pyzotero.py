@@ -17,6 +17,12 @@ api_key = config['zotero_web_api']['api_key']
 zotero = zotero.Zotero(user_id, 'user', api_key=api_key)
 
 
+def item_exists(name, tag):
+    item = zotero.items(itemType='webpage', tag=tag, qmode='titleCreatorYear', q=name, limit=1)
+    #print('item_exists(): {0}'.format(item))
+    return True if item else False
+
+
 def create_collection(name):
     if collection_exists(name) == False:
         arg = [{'name': name}]
@@ -81,5 +87,7 @@ if __name__ == "__main__":
     # else:
     #     print('collection [{0}] does not exist.'.format(collection_name))
 
-    collection_name = 'uploaded_jira_tickets'
-    print(create_collection(collection_name))
+    #collection_name = 'uploaded_jira_tickets'
+    #print(create_collection(collection_name))
+
+    print('item_exists(): {0}'.format(item_exists('The SQ4R Method of Study', 'Note')))

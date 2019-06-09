@@ -19,9 +19,17 @@ from upload_zot_items_utils import format_jira_date
 from upload_zot_items_utils import sort_pacs_versions
 from upload_zot_items_utils import transform
 
+from upload_zot_items_web_api import TAG_TICKET_JIRA
+
+from upload_zot_items_web_api import create_collection
+from upload_zot_items_web_api import create_item
+from upload_zot_items_web_api import item_exists
+
+TARGET_COLLECTION = 'uploaded_jira_tickets'
+
 
 logging.config.fileConfig(fname='log.cfg')
-log = logging.getLogger('upload_zot_items')
+log = logging.getLogger('log')
 
 
 def remove_directory(dir_name):
@@ -111,9 +119,14 @@ def save_item_to_file(dir_name, key, item_xml):
     f.close()
 
 
-def parse_jira_item(item_xml, args):
+def parse_jira_item(args, item_xml, target_collection_id):
     """Extract Zotero attributes from one Jira item."""
     untangle_obj = untangle.parse(item_xml)
+
+    title = untangle_obj.item.title.cdata
+    if item_exists(title, TAG_TICKET_JIRA):
+        log.debug('Item [{0}] already exists. Skipping.'.format(title))
+        return
 
     key = untangle_obj.item.key.cdata
 
@@ -124,10 +137,12 @@ def parse_jira_item(item_xml, args):
 
     ticket_type = untangle_obj.item.type.cdata
 
+    url = untangle_obj.item.link.cdata
+
     log.debug('Item (start) %s' % ('-' * 80))
     log.debug('Item Directory  : ' + dir_name)
-    log.debug('Title           : ' + untangle_obj.item.title.cdata)
-    log.debug('Link            : ' + untangle_obj.item.link.cdata)
+    log.debug('Title           : ' + title)
+    log.debug('Link            : ' + url)
     log.debug('Key             : ' + key)
     log.debug('Type            : ' + ticket_type)
     log.debug('Component       : ' + untangle_obj.item.component.cdata)
@@ -143,13 +158,16 @@ def parse_jira_item(item_xml, args):
 
     save_patches_to_file(tags, untangle_obj, dir_name)
 
-    # remove_directory(dir_name)
+    # Create item in Zotero Web API
     tags.sort()
+    create_item(target_collection_id, title, url, tags)
+    remove_directory(dir_name)
+
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
 
 
-def parse_jira_xml(args):
+def parse_jira_xml(args, target_collection_id):
     """Extract Jira items from XML file."""
     with open(args.xml_filepath, 'r') as f:
         tree = ElementTree.parse(f)
@@ -158,7 +176,7 @@ def parse_jira_xml(args):
         item_raw = ElementTree.tostring(item)
         item_doc = minidom.parseString(item_raw)
         item_xml = item_doc.toxml()
-        parse_jira_item(item_xml, args)
+        parse_jira_item(args, item_xml, target_collection_id)
 
 
 def parse_arguments():
@@ -171,7 +189,7 @@ def parse_arguments():
     parser.add_argument(
         '--tag', action='append',
         dest='common_tags',
-        default=['ticket_jira'],
+        default=[TAG_TICKET_JIRA],
         help='command tags to assign to all uploaded items')
     args = parser.parse_args()
     log.debug('Arguments Passed (start) %s' % ('-' * 68))
@@ -183,7 +201,12 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    parse_jira_xml(args)
+    target_collection_id = create_collection(TARGET_COLLECTION)
+    if not target_collection_id:
+        log.debug('Target collection [{0}] already exists. Aborting.'.format(TARGET_COLLECTION))
+        log.debug('Please delete the target collection and try again.')
+        return False
+    parse_jira_xml(args, target_collection_id)
 
 
 if __name__ == "__main__":
