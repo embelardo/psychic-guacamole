@@ -21,56 +21,11 @@ logging.config.fileConfig(fname='log.cfg')
 log = logging.getLogger('upload_zot_items')
 
 
-def parse_jira_item(item_xml, args):
-    """Extract Zotero attributes from one Jira item."""
-    untangle_obj = untangle.parse(item_xml)
-
-    key = untangle_obj.item.key.cdata
-
-    # Save item to file.
-    f = open("{0}.xml".format(key), "w")
-    f.write(item_xml)
-    f.close()
-
-    ticket_type = untangle_obj.item.type.cdata
-
-    log.debug('Item (start) %s' % ('-' * 80))
-    log.debug('Title           : ' + untangle_obj.item.title.cdata)
-    log.debug('Link            : ' + untangle_obj.item.link.cdata)
-    log.debug('Key             : ' + key)
-    log.debug('Type            : ' + ticket_type)
-    log.debug('Component       : ' + untangle_obj.item.component.cdata)
-
-    # Collect tags as Jira item is processed.
-    tags = args.common_tags[:] # Copy list contents
-    # Add type ticket type tag
-    tags.append('ticket_' + transform(ticket_type))
-
-    # Affected Clients
-    affected_clients = []
-    for customfield in untangle_obj.item.customfields.customfield:
-        if customfield.customfieldname.cdata == 'Affected Clients':
-            for label in customfield.customfieldvalues.label:
-                affected_client = 'client_' + label.cdata.lower()
-                affected_clients.append(affected_client)
-                if affected_client not in tags:
-                    tags.append(affected_client)
-    if not any(element.startswith('client_') for element in tags):
-        tags.append('client_none')
-    log.debug('Affected Clients: {0}'.format(affected_clients))
-
-    # RPM Upgrade List
-    rpm_upgrade_list = []
-    for customfield in untangle_obj.item.customfields.customfield:
-        if customfield.customfieldname.cdata == 'RPM Upgrade List':
-            for customfieldvalue in customfield.customfieldvalues.customfieldvalue:
-                rpm = 'rpm_' + customfieldvalue.cdata
-                rpm_upgrade_list.append(rpm)
-                if rpm not in tags:
-                    tags.append(rpm)
-    log.debug('RPM Upgrade List: {0}'.format(rpm_upgrade_list))
-
-    # Changesets
+def save_patches_to_file(tags, untangle_obj):
+    """Save raw patch contents to a file.
+       Extract earliest PACS version patched and convert into fixed version tag.
+       Extract latest patch date and convert into circa tag.
+    """
     log.debug('List of Patches:')
     regex = re.compile(r'.*(https://forge.intelerad.com/hg[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)')
     jira_date = None
@@ -100,9 +55,72 @@ def parse_jira_item(item_xml, args):
         formatted_pacs_version = pacs_versions[0].lower()
         if formatted_pacs_version not in tags:
             tags.append('fixed_' + formatted_pacs_version)
+    # log.debug('PACS Versions   : {0}'.format(pacs_versions))
+
+
+def add_affected_client_tags(tags, untangle_obj):
+    """Extract affected clients and convert them into client tags."""
+    affected_clients = []
+    for customfield in untangle_obj.item.customfields.customfield:
+        if customfield.customfieldname.cdata == 'Affected Clients':
+            for label in customfield.customfieldvalues.label:
+                affected_client = 'client_' + label.cdata.lower()
+                affected_clients.append(affected_client)
+                if affected_client not in tags:
+                    tags.append(affected_client)
+    if not any(element.startswith('client_') for element in tags):
+        tags.append('client_none')
+    log.debug('Affected Clients: {0}'.format(affected_clients))
+
+
+def add_rpm_tags(tags, untangle_obj):
+    """Extract upgrade RPMs and convert them into rpm tags."""
+    rpm_upgrade_list = []
+    for customfield in untangle_obj.item.customfields.customfield:
+        if customfield.customfieldname.cdata == 'RPM Upgrade List':
+            for customfieldvalue in customfield.customfieldvalues.customfieldvalue:
+                rpm = 'rpm_' + customfieldvalue.cdata
+                rpm_upgrade_list.append(rpm)
+                if rpm not in tags:
+                    tags.append(rpm)
+    log.debug('RPM Upgrade List: {0}'.format(rpm_upgrade_list))
+
+
+def save_item_to_file(key, item_xml):
+    f = open("{0}.xml".format(key), "w")
+    f.write(item_xml)
+    f.close()
+
+
+def parse_jira_item(item_xml, args):
+    """Extract Zotero attributes from one Jira item."""
+    untangle_obj = untangle.parse(item_xml)
+
+    key = untangle_obj.item.key.cdata
+
+    save_item_to_file(key, item_xml)
+
+    ticket_type = untangle_obj.item.type.cdata
+
+    log.debug('Item (start) %s' % ('-' * 80))
+    log.debug('Title           : ' + untangle_obj.item.title.cdata)
+    log.debug('Link            : ' + untangle_obj.item.link.cdata)
+    log.debug('Key             : ' + key)
+    log.debug('Type            : ' + ticket_type)
+    log.debug('Component       : ' + untangle_obj.item.component.cdata)
+
+    # Add tags as item is processed.
+    tags = args.common_tags[:]
+
+    tags.append('ticket_' + transform(ticket_type))
+
+    add_affected_client_tags(tags, untangle_obj)
+
+    add_rpm_tags(tags, untangle_obj)
+
+    save_patches_to_file(tags, untangle_obj)
 
     tags.sort()
-    # log.debug('PACS Versions   : {0}'.format(pacs_versions))
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
 
