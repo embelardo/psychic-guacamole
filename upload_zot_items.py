@@ -3,8 +3,11 @@
 import argparse
 import logging
 import logging.config
+import os
 import re
+import shutil
 import urllib.request
+import uuid
 
 from datetime import datetime
 from xml.etree import ElementTree
@@ -21,7 +24,22 @@ logging.config.fileConfig(fname='log.cfg')
 log = logging.getLogger('upload_zot_items')
 
 
-def save_patches_to_file(tags, untangle_obj):
+def remove_directory(dir_name):
+    """Remove directory and all its contents."""
+    shutil.rmtree(dir_name)
+
+
+def create_directory(dir_name):
+    """Create directory and fail if it already exists."""
+    os.makedirs(dir_name)
+
+
+def create_random_dir_name(key):
+    """Create directory name using a uuid."""
+    return 'tmp/{0}_{1}'.format(key, str(uuid.uuid1()))
+
+
+def save_patches_to_file(tags, untangle_obj, dir_name):
     """Save raw patch contents to a file.
        Extract earliest PACS version patched and convert into fixed version tag.
        Extract latest patch date and convert into circa tag.
@@ -36,15 +54,15 @@ def save_patches_to_file(tags, untangle_obj):
             # log.debug('Patch Commit Date: '.format(jira_date))
             # Save raw patch to file.
             for match in regex.finditer(comment.cdata):
-                patch_url = match.group(1).replace("rev", "raw-rev")
+                patch_url = match.group(1).replace('rev', 'raw-rev')
                 component_version = match.group(3)
-                patch_file = "{0}_{1}.patch".format(match.group(2).replace(":", "_"), component_version)
+                patch_file = '{0}/{1}_{2}.patch'.format(dir_name, match.group(2).replace(':', '_'), component_version)
                 if component_version.startswith('PACS') and component_version not in pacs_versions:
                     pacs_versions.append(component_version)
-                log.debug("    Patch URL (File): {0} ({1})".format(patch_url, patch_file))
-                # f = open(patch_file, "w")
-                # f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
-                # f.close()
+                log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
+                f = open(patch_file, 'w')
+                f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
+                f.close()
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
@@ -86,8 +104,8 @@ def add_rpm_tags(tags, untangle_obj):
     log.debug('RPM Upgrade List: {0}'.format(rpm_upgrade_list))
 
 
-def save_item_to_file(key, item_xml):
-    f = open("{0}.xml".format(key), "w")
+def save_item_to_file(key, dir_name, item_xml):
+    f = open('{0}/{1}.xml'.format(dir_name, key), 'w')
     f.write(item_xml)
     f.close()
 
@@ -98,11 +116,15 @@ def parse_jira_item(item_xml, args):
 
     key = untangle_obj.item.key.cdata
 
-    save_item_to_file(key, item_xml)
+    dir_name = create_random_dir_name(key)
+    create_directory(dir_name)
+
+    save_item_to_file(key, dir_name, item_xml)
 
     ticket_type = untangle_obj.item.type.cdata
 
     log.debug('Item (start) %s' % ('-' * 80))
+    log.debug('Item Directory  : ' + dir_name)
     log.debug('Title           : ' + untangle_obj.item.title.cdata)
     log.debug('Link            : ' + untangle_obj.item.link.cdata)
     log.debug('Key             : ' + key)
@@ -118,8 +140,9 @@ def parse_jira_item(item_xml, args):
 
     add_rpm_tags(tags, untangle_obj)
 
-    save_patches_to_file(tags, untangle_obj)
+    save_patches_to_file(tags, untangle_obj, dir_name)
 
+    remove_directory(dir_name)
     tags.sort()
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
