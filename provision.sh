@@ -37,11 +37,8 @@ pip3.6 install zotero-cli
 echo; echo "Install pandoc"
 # Pandoc is a Haskell library for converting from one markup format to another,
 # and a command-line tool that uses this library.
+# Required by zotero-cli
 yum install pandoc
-
-echo; echo "Install xmltodict"
-# Makes working with XML feel like you are working with JSON.
-pip3.6 install xmltodict
 
 echo; echo "Install mlocate"
 # mlocate is a locate/updatedb implementation. It keeps a database of all
