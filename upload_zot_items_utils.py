@@ -1,5 +1,10 @@
 #!/usr/bin/python3.6
 
+import re
+
+from datetime import datetime
+
+
 formatted_strings = {
     # Components
     "Access Control": "comp_access_control",
@@ -56,3 +61,19 @@ def sort_pacs_versions(pacs_versions):
     early_versions.sort()
     late_versions.sort()
     return early_versions + late_versions
+
+
+def format_jira_date(jira_date):
+    """Return simple date format of Jira date
+       Sample Jira Date    : Wed, 22 May 2019 13:40:38 -0400
+       Sample Simple Format: 2019_0522
+    """
+    regex = re.compile(r'[\w]+, ([\d]+) ([\w]+) ([\d]+) .*')
+
+    search_obj = regex.search(jira_date)
+    day = search_obj.group(1)
+    month = search_obj.group(2)
+    year = search_obj.group(3)
+
+    datetime_obj = datetime.strptime('%s %s %s' % (day.zfill(2), month, year), '%d %b %Y')
+    return datetime_obj.strftime('%Y_%m%d')

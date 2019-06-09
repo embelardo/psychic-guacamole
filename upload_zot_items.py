@@ -6,11 +6,13 @@ import logging.config
 import re
 import urllib.request
 
+from datetime import datetime
 from xml.etree import ElementTree
 from xml.dom import minidom
 
 import untangle
 
+from upload_zot_items_utils import format_jira_date
 from upload_zot_items_utils import sort_pacs_versions
 from upload_zot_items_utils import transform
 
@@ -30,15 +32,19 @@ def parse_jira_item(item_xml, args):
     f.write(item_xml)
     f.close()
 
+    ticket_type = untangle_obj.item.type.cdata
+
     log.debug('Item (start) %s' % ('-' * 80))
     log.debug('Title           : ' + untangle_obj.item.title.cdata)
     log.debug('Link            : ' + untangle_obj.item.link.cdata)
     log.debug('Key             : ' + key)
-    log.debug('Type            : ' + untangle_obj.item.type.cdata)
+    log.debug('Type            : ' + ticket_type)
     log.debug('Component       : ' + untangle_obj.item.component.cdata)
 
     # Collect tags as Jira item is processed.
     tags = args.common_tags[:] # Copy list contents
+    # Add type ticket type tag
+    tags.append('ticket_' + transform(ticket_type))
 
     # Affected Clients
     affected_clients = []
@@ -67,9 +73,12 @@ def parse_jira_item(item_xml, args):
     # Changesets
     log.debug('List of Patches:')
     regex = re.compile(r'.*(https://forge.intelerad.com/hg[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)')
+    jira_date = None
     pacs_versions = []
     for comment in untangle_obj.item.comments.comment:
         if regex.search(comment.cdata):
+            jira_date = comment['created']
+            # log.debug('Patch Commit Date: '.format(jira_date))
             # Save raw patch to file.
             for match in regex.finditer(comment.cdata):
                 patch_url = match.group(1).replace("rev", "raw-rev")
@@ -81,7 +90,11 @@ def parse_jira_item(item_xml, args):
                 # f = open(patch_file, "w")
                 # f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
                 # f.close()
-            # Add earliest PACS version where patch was applied.
+    # Add latest patch commit date as circa tag
+    circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
+    # log.debug('Circa Tag: {0}'.format(circa_tag))
+    tags.append(circa_tag)
+    # Add earliest PACS version where patch was applied as a fixed version tag.
     if pacs_versions:
         pacs_versions = sort_pacs_versions(pacs_versions)
         formatted_pacs_version = pacs_versions[0].lower()
@@ -89,7 +102,7 @@ def parse_jira_item(item_xml, args):
             tags.append('fixed_' + formatted_pacs_version)
 
     tags.sort()
-    log.debug('PACS Versions   : {0}'.format(pacs_versions))
+    # log.debug('PACS Versions   : {0}'.format(pacs_versions))
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
 
