@@ -104,7 +104,13 @@ venv.bak/
 .mypy_cache/
 
 # Temporary files
+tmp/
 *.org
 
 # Vagrant
 .vagrant/
+
+# security (git-secret)
+.gitsecret/keys/random_seed
+!*.secret
+upload_zot_items.cfg

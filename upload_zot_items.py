@@ -60,9 +60,9 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                 if component_version.startswith('PACS') and component_version not in pacs_versions:
                     pacs_versions.append(component_version)
                 log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
-                f = open(patch_file, 'w')
-                f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
-                f.close()
+                # f = open(patch_file, 'w')
+                # f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
+                # f.close()
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
@@ -104,8 +104,9 @@ def add_rpm_tags(tags, untangle_obj):
     log.debug('RPM Upgrade List: {0}'.format(rpm_upgrade_list))
 
 
-def save_item_to_file(key, dir_name, item_xml):
-    f = open('{0}/{1}.xml'.format(dir_name, key), 'w')
+def save_item_to_file(dir_name, key, item_xml):
+    item_file = '{0}/{1}.xml'.format(dir_name, key)
+    f = open(item_file, 'w')
     f.write(item_xml)
     f.close()
 
@@ -119,7 +120,7 @@ def parse_jira_item(item_xml, args):
     dir_name = create_random_dir_name(key)
     create_directory(dir_name)
 
-    save_item_to_file(key, dir_name, item_xml)
+    save_item_to_file(dir_name, key, item_xml)
 
     ticket_type = untangle_obj.item.type.cdata
 
@@ -142,7 +143,7 @@ def parse_jira_item(item_xml, args):
 
     save_patches_to_file(tags, untangle_obj, dir_name)
 
-    remove_directory(dir_name)
+    # remove_directory(dir_name)
     tags.sort()
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
