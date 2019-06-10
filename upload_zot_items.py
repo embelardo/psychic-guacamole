@@ -72,7 +72,7 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                     pacs_versions.append(component_version)
                 log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
                 f = open(patch_file, 'w')
-                f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
+                f.write(urllib.request.urlopen(patch_url).read().decode('ISO-8859-1'))
                 f.close()
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
