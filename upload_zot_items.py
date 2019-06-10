@@ -77,7 +77,7 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                     patch_content = urllib.request.urlopen(patch_url).read().decode('ISO-8859-1')
                     f.write(patch_content)
                     f.close()
-                except HTTPError as error:
+                except Exception as error:
                     log.debug(error)
                     log.debug('      Error accessing URL [{0}]'.format(patch_url))
     # Add latest patch commit date as circa tag
