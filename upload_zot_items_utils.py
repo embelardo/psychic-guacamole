@@ -7,46 +7,44 @@ from datetime import datetime
 
 formatted_strings = {
     # Components
-    "Access Control": "comp_access_control",
-    "Analytics": "comp_analytics",
-    "Atlas": "comp_atlas",
-    "Auditing": "comp_auditing",
-    "Automation Infrastructure": "comp_automation_infrastructure",
-    "Build": "comp_build",
-    "EV": "comp_ev",
-    "HL7": "comp_hl7",
-    "IAE/PRAE": "comp_iae_prae",
-    "Image Corrections/Deletions": "comp_image_corrections_deletions",
-    "Image Workflow": "comp_image_workflow",
-    "InteleBrowser": "comp_intelebrowser",
-    "InteleConnect": "comp_inteleconnect",
-    "InteleViewer": "comp_inteleviewer",
-    "Monitoring": "comp_monitoring",
-    "Peer Review": "comp_peer_review",
-    "PEP": "comp_pep",
-    "Replication": "comp_replication",
-    "Report Distribution": "comp_report_distribution",
-    "Reporting Workflow": "comp_reporting_workflow",
-    "Technical Services": "comp_technical_services",
-    "User Service": "comp_user_service",
+    "Access Control": "component_access_control",
+    "Analytics": "component_analytics",
+    "Atlas": "component_atlas",
+    "Auditing": "component_auditing",
+    "Automation Infrastructure": "component_automation_infrastructure",
+    "Build": "component_build",
+    "EV": "component_ev",
+    "HL7": "component_hl7",
+    "IAE/PRAE": "component_iae_prae",
+    "Image Corrections/Deletions": "component_image_corrections_deletions",
+    "Image Workflow": "component_image_workflow",
+    "InteleBrowser": "component_intelebrowser",
+    "InteleConnect": "component_inteleconnect",
+    "InteleViewer": "component_inteleviewer",
+    "Monitoring": "component_monitoring",
+    "Peer Review": "component_peer_review",
+    "PEP": "component_pep",
+    "Replication": "component_replication",
+    "Report Distribution": "component_report_distribution",
+    "Reporting Workflow": "component_reporting_workflow",
+    "Technical Services": "component_technical_services",
+    "User Service": "component_user_service",
     # Types
     "Bug": "type_bug",
     "Enhancement": "type_enhancement",
     "Epic": "type_epic",
+    "Problem": "type_problem",
     "Release Project": "type_release_project",
+    "Story": "type_story",
+    "Sub-task": "type_sub_task",
     "Task": "type_task",
     "Technical Debt": "type_technical_debt"
-    #
 }
 
 
 def transform(key):
     """Return the formatted equivalent of a given string."""
-    value = formatted_strings[key]
-    if value:
-        return value
-    else:
-        return key
+    return formatted_strings[key]
 
 
 def sort_pacs_versions(pacs_versions):

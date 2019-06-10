@@ -6,6 +6,7 @@ import logging.config
 import os
 import re
 import shutil
+import time
 import urllib.request
 import uuid
 
@@ -128,7 +129,7 @@ def parse_jira_item(args, item_xml, target_collection_id):
     title = untangle_obj.item.title.cdata
     if item_exists(title, TAG_TICKET_JIRA):
         log.debug('Item [{0}] already exists. Skipping.'.format(title))
-        return
+        return False
 
     key = untangle_obj.item.key.cdata
 
@@ -147,10 +148,22 @@ def parse_jira_item(args, item_xml, target_collection_id):
     log.debug('Link            : ' + url)
     log.debug('Key             : ' + key)
     log.debug('Type            : ' + ticket_type)
-    log.debug('Component       : ' + untangle_obj.item.component.cdata)
 
     # Add tags as item is processed.
     tags = args.common_tags[:]
+
+    # There can be multiple components
+    try:
+        component = untangle_obj.item.component
+        if isinstance(component, list):
+            log.debug('Component       : {0}'.format(untangle_obj.item.component))
+            for element in component:
+                tags.append(transform(element.cdata))
+        else:
+            log.debug('Component       : {0}'.format(component.cdata))
+            tags.append(transform(component.cdata))
+    except AttributeError:
+        log.debug('Component       : None')
 
     tags.append('ticket_' + transform(ticket_type))
 
@@ -169,6 +182,7 @@ def parse_jira_item(args, item_xml, target_collection_id):
 
     log.debug('Tags            : {0}'.format(tags))
     log.debug('Item (end)   %s' % ('-' * 80))
+    return True
 
 
 def parse_jira_xml(args, target_collection_id):
@@ -180,7 +194,10 @@ def parse_jira_xml(args, target_collection_id):
         item_raw = ElementTree.tostring(item)
         item_doc = minidom.parseString(item_raw)
         item_xml = item_doc.toxml()
-        parse_jira_item(args, item_xml, target_collection_id)
+        item_created = parse_jira_item(args, item_xml, target_collection_id)
+        # Pause between item creations like a good citizen
+        if item_created:
+            time.sleep(5)
 
 
 def parse_arguments():
