@@ -24,6 +24,7 @@ from upload_zot_items_web_api import TAG_TICKET_JIRA
 from upload_zot_items_web_api import create_collection
 from upload_zot_items_web_api import create_item
 from upload_zot_items_web_api import item_exists
+from upload_zot_items_web_api import upload_file_attachments
 
 TARGET_COLLECTION = 'uploaded_jira_tickets'
 
@@ -64,13 +65,14 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
             for match in regex.finditer(comment.cdata):
                 patch_url = match.group(1).replace('rev', 'raw-rev')
                 component_version = match.group(3)
-                patch_file = '{0}/{1}_{2}.patch'.format(dir_name, match.group(2).replace(':', '_'), component_version)
+                repo_hash = match.group(2).split(':')
+                patch_file = '{0}/{1}_{2}_{3}.patch'.format(dir_name, repo_hash[0], component_version, repo_hash[1])
                 if component_version.startswith('PACS') and component_version not in pacs_versions:
                     pacs_versions.append(component_version)
                 log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
-                # f = open(patch_file, 'w')
-                # f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
-                # f.close()
+                f = open(patch_file, 'w')
+                f.write(urllib.request.urlopen(patch_url).read().decode('utf-8'))
+                f.close()
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
@@ -160,7 +162,9 @@ def parse_jira_item(args, item_xml, target_collection_id):
 
     # Create item in Zotero Web API
     tags.sort()
-    create_item(target_collection_id, title, url, tags)
+    item_id = create_item(target_collection_id, key, title, url, tags)
+    upload_status = upload_file_attachments(item_id, dir_name)
+    log.debug('Upload Success  : {0}'.format(upload_status))
     remove_directory(dir_name)
 
     log.debug('Tags            : {0}'.format(tags))

@@ -1,7 +1,9 @@
 #!/usr/bin/python3.6
 
 import configparser
-import pprint
+import glob
+
+from pprint import pprint
 
 from pyzotero import zotero
 
@@ -40,10 +42,19 @@ zotero = zotero.Zotero(user_id, 'user', api_key=api_key)
 WEB_PAGE_TEMPLATE = zotero.item_template('webpage')
 
 
-def create_item(collection_id, title, url, tags):
+def upload_file_attachments(item_id, dir_name):
+    item_files = glob.glob('{0}/*'.format(dir_name))
+    # pprint('upload_file_attachments(): {0}'.format(item_files))
+    ret = zotero.attachment_simple(item_files, item_id)
+    # pprint('upload_file_attachments(): {0}'.format(ret))
+    return True if not ret['failure'] else False
+
+
+def create_item(collection_id, key, title, url, tags):
     item = WEB_PAGE_TEMPLATE.copy()
     item['itemType'] = 'webpage'
     item['collections'] = [collection_id]
+    item['shortTitle'] = key
     item['title'] = title
     item['url'] = url
     item['websiteTitle'] = 'Jira'
@@ -54,7 +65,8 @@ def create_item(collection_id, title, url, tags):
     item['tags'] = tags_list
 
     ret = zotero.create_items([item])
-    print('create_item(): {0}'.format(ret))
+    # print('create_item(): {0}'.format(ret))
+    return ret['success']['0']
 
 
 def item_exists(name, tag):
@@ -67,8 +79,8 @@ def create_collection(name):
     if collection_exists(name) == False:
         arg = [{'name': name}]
         ret = zotero.create_collections(arg)
-        # pp.pprint(ret)
-        # pp.pprint(ret['success']['0'])
+        # pprint(ret)
+        # pprint(ret['success']['0'])
         return ret['success']['0']
     else:
         return None
