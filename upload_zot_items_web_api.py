@@ -70,7 +70,12 @@ def create_item(collection_id, key, title, url, tags):
 
 
 def item_exists(name, tag):
-    item = zotero.items(itemType='webpage', tag=tag, qmode='titleCreatorYear', q=name, limit=1)
+    item = None
+    try:
+        item = zotero.items(itemType='webpage', tag=tag, qmode='titleCreatorYear', q=name, limit=1)
+    except KeyError as error:
+        print(error)
+        return False
     #print('item_exists(): {0}'.format(item))
     return True if item else False
 
