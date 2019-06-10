@@ -11,6 +11,7 @@ import urllib.request
 import uuid
 
 from datetime import datetime
+from urllib.error import HTTPError
 from xml.etree import ElementTree
 from xml.dom import minidom
 
@@ -71,9 +72,14 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                 if component_version.startswith('PACS') and component_version not in pacs_versions:
                     pacs_versions.append(component_version)
                 log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
-                f = open(patch_file, 'w')
-                f.write(urllib.request.urlopen(patch_url).read().decode('ISO-8859-1'))
-                f.close()
+                try:
+                    f = open(patch_file, 'w')
+                    patch_content = urllib.request.urlopen(patch_url).read().decode('ISO-8859-1')
+                    f.write(patch_content)
+                    f.close()
+                except HTTPError as error:
+                    log.debug(error)
+                    log.debug('      Error accessing URL [{0}]'.format(patch_url))
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
