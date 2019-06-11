@@ -1,0 +1,36 @@
+# WebPage Template
+
+{     
+    'abstractNote': '',
+    'accessDate': '',
+    'collections': [],
+    'creators': [{'creatorType': 'author', 'firstName': '', 'lastName': ''}],
+    'date': '',
+    'extra': '',
+    'itemType': 'webpage',
+    'language': '',
+    'relations': {},
+    'rights': '',
+    'shortTitle': '',
+    'tags': [],
+    'title': '',
+    'url': '',
+    'websiteTitle': '',
+    'websiteType': ''
+}
+
+# Attachment Template
+
+{
+    'itemType': 'attachment',
+    'linkMode': 'imported_file',
+    'title': '', 'accessDate': '',
+    'note': '', 'tags': [],
+    'collections': [],
+    'relations': {},
+    'contentType': '',
+    'charset': '',
+    'filename': '',
+    'md5': None,
+    'mtime': None
+}
