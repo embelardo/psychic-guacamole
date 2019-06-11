@@ -56,6 +56,7 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
        Extract latest patch date and convert into circa tag.
     """
     log.debug('List of Patches:')
+    log.debug('  Target Directory: {0}'.format(dir_name))
     regex = re.compile(r'.*(https://forge.intelerad.com/hg[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)')
     jira_date = None
     pacs_versions = []
@@ -68,12 +69,13 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                 patch_url = match.group(1).replace('rev', 'raw-rev')
                 component_version = match.group(3)
                 repo_hash = match.group(2).split(':')
-                patch_file = '{0}/{1}_{2}_{3}.patch'.format(dir_name, repo_hash[0], component_version, repo_hash[1])
+                patch_filename = '{0}_{1}_{2}.patch.txt'.format(repo_hash[0], component_version, repo_hash[1])
+                patch_filepath = '{0}/{1}'.format(dir_name, patch_filename)
                 if component_version.startswith('PACS') and component_version not in pacs_versions:
                     pacs_versions.append(component_version)
-                log.debug('    Patch URL | File: {0} | {1}'.format(patch_url, patch_file))
+                log.debug('    {0} | {1}'.format(patch_url, patch_filename))
                 try:
-                    f = open(patch_file, 'w')
+                    f = open(patch_filepath, 'w')
                     patch_content = urllib.request.urlopen(patch_url).read().decode('ISO-8859-1')
                     f.write(patch_content)
                     f.close()
@@ -203,7 +205,7 @@ def parse_jira_xml(args, target_collection_id):
         item_created = parse_jira_item(args, item_xml, target_collection_id)
         # Pause between item creations like a good citizen
         if item_created:
-            time.sleep(5)
+            time.sleep(3)
 
 
 def parse_arguments():
