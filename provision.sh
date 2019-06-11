@@ -38,9 +38,9 @@ echo; echo "Install pandoc"
 # Pandoc is a Haskell library for converting from one markup format to another,
 # and a command-line tool that uses this library.
 # Required by zotero-cli
-yum install pandoc
+yum install -y pandoc
 
 echo; echo "Install mlocate"
 # mlocate is a locate/updatedb implementation. It keeps a database of all
 # existing files and allows you to lookup files by name.
-yum install mlocate
+yum install -y mlocate

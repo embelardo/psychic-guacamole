@@ -151,7 +151,6 @@ def parse_jira_item(args, item_xml, target_collection_id):
     url = untangle_obj.item.link.cdata
 
     log.debug('Item (start) %s' % ('-' * 80))
-    log.debug('Item Directory  : ' + dir_name)
     log.debug('Title           : ' + title)
     log.debug('Link            : ' + url)
     log.debug('Key             : ' + key)
@@ -185,7 +184,7 @@ def parse_jira_item(args, item_xml, target_collection_id):
     tags.sort()
     item_id = create_item(target_collection_id, key, title, url, tags)
     upload_status = upload_file_attachments(item_id, dir_name)
-    log.debug('Upload Success  : {0}'.format(upload_status))
+    log.debug('  Upload Successful [{0}]'.format(upload_status))
     remove_directory(dir_name)
 
     log.debug('Tags            : {0}'.format(tags))
