@@ -1,10 +1,10 @@
---- /usr/lib64/python3.6/site-packages/pyzotero/zotero.py	2019-06-12 08:24:13.756358950 -0400
+:q--- /usr/lib64/python3.6/site-packages/pyzotero/zotero.py	2019-06-12 08:24:13.756358950 -0400
 +++ /usr/lib64/python3.6/site-packages/pyzotero/zotero.py	2019-06-12 08:26:29.932689020 -0400
 @@ -1310,6 +1310,12 @@
          for idx, tmplt in enumerate(to_add):
              tmplt["title"] = os.path.basename(files[idx])
              tmplt["filename"] = files[idx]
-+            if files[idx].endswith('.patch.txt')
++            if files[idx].endswith('.patch.txt'):
 +                tmplt["contentType"] = 'text/plain'
 +                tmplt["charset"] = 'iso-8859-1'
 +            elif files[idx].endswith('.xml'):

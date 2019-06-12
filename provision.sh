@@ -24,11 +24,11 @@ ipython3 -V
 echo; echo "Install untangle"
 # Untangle parses an XML document and returns a Python object which makes it easy
 # to access the data you want.
-pip3.6 install untangle
+pip3.6 install "untangle==1.1.1"
 
 echo; echo "Install pyzotero"
 # Pyzotero is a Python wrapper for the Zotero API (v3).
-pip3.6 install pyzotero
+pip3.6 install "pyzotero==1.4.1"
 
 echo; echo "Install zotero-cli"
 # Zotero-cli is a simple command-line interface for the Zotero API.
