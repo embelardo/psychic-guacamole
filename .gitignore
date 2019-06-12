@@ -113,4 +113,6 @@ tmp/
 # security (git-secret)
 .gitsecret/keys/random_seed
 !*.secret
+sample.xml
+sample_multiple_items.xml
 upload_zot_items.cfg
