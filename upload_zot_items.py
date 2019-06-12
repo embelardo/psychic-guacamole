@@ -55,11 +55,12 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
        Extract earliest PACS version patched and convert into fixed version tag.
        Extract latest patch date and convert into circa tag.
     """
-    log.debug('List of Patches:')
-    log.debug('  Target Directory: {0}'.format(dir_name))
+    log.debug('Patch List      :')
     regex = re.compile(r'.*(https://forge.intelerad.com/hg[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)')
     jira_date = None
     pacs_versions = []
+    committer_pattern = re.compile(r'.*<([a-z]+)(@intelerad.com).*')
+    committer = None
     for comment in untangle_obj.item.comments.comment:
         if regex.search(comment.cdata):
             jira_date = comment['created']
@@ -71,17 +72,25 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                 repo_hash = match.group(2).split(':')
                 patch_filename = '{0}_{1}_{2}.patch.txt'.format(repo_hash[0], component_version, repo_hash[1])
                 patch_filepath = '{0}/{1}'.format(dir_name, patch_filename)
-                if component_version.startswith('PACS') and component_version not in pacs_versions:
+                if component_version not in pacs_versions:
                     pacs_versions.append(component_version)
-                log.debug('    {0} | {1}'.format(patch_url, patch_filename))
+                log.debug('  {0} | {1}'.format(patch_url, patch_filename))
                 try:
                     f = open(patch_filepath, 'w')
                     patch_content = urllib.request.urlopen(patch_url).read().decode('ISO-8859-1')
+                    # Try to get committer
+                    if not committer:
+                        committer_match = committer_pattern.search(patch_content)
+                        if committer_match:
+                            committer = committer_match.group(1)
                     f.write(patch_content)
                     f.close()
                 except Exception as error:
                     log.debug(error)
                     log.debug('      Error accessing URL [{0}]'.format(patch_url))
+    # Add committer tag
+    if committer:
+        tags.append('committer_{0}'.format(committer.lower()))
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
@@ -151,9 +160,10 @@ def parse_jira_item(args, item_xml, target_collection_id):
     url = untangle_obj.item.link.cdata
 
     log.debug('Item (start) %s' % ('-' * 80))
+    log.debug('Key             : ' + key)
+    log.debug('Item Directory  : ' + dir_name)
     log.debug('Title           : ' + title)
     log.debug('Link            : ' + url)
-    log.debug('Key             : ' + key)
     log.debug('Type            : ' + ticket_type)
 
     # Add tags as item is processed.
@@ -184,7 +194,7 @@ def parse_jira_item(args, item_xml, target_collection_id):
     tags.sort()
     item_id = create_item(target_collection_id, key, title, url, tags)
     upload_status = upload_file_attachments(item_id, dir_name)
-    log.debug('  Upload Successful [{0}]'.format(upload_status))
+    log.debug('Upload Success  : {0}'.format(upload_status))
     remove_directory(dir_name)
 
     log.debug('Tags            : {0}'.format(tags))
