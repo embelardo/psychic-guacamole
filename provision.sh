@@ -44,3 +44,14 @@ echo; echo "Install mlocate"
 # mlocate is a locate/updatedb implementation. It keeps a database of all
 # existing files and allows you to lookup files by name.
 yum install -y mlocate
+updatedb
+
+echo; echo "Install patch"
+# The patch program applies diff files to originals.
+# The diff command is used to compare an original to a changed file.
+yum install -y patch
+
+echo; echo "Patch pyzotero for content-type and charset of uploaded .patch.txt and .xml files"
+# For .patch.txt: content-type = 'text/plain', and charset = 'iso-8859-1'
+# For .xml      : content-type = 'text/plain', and charset = 'utf-8'
+patch -p0 < /vagrant/zotero_patch_contenttype_charset.patch -d /
