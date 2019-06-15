@@ -34,8 +34,8 @@ TAG_TICKET_JIRA = 'ticket_jira'
 config = configparser.ConfigParser()
 config.read('upload_zot_items.cfg')
 
-user_id = config['zotero_web_api']['user_id']
-api_key = config['zotero_web_api']['api_key']
+user_id = config['upload_zot_items_web_api']['user_id']
+api_key = config['upload_zot_items_web_api']['api_key']
 
 zotero = zotero.Zotero(user_id, 'user', api_key=api_key)
 
@@ -45,7 +45,10 @@ WEB_PAGE_TEMPLATE = zotero.item_template('webpage')
 def upload_file_attachments(item_id, dir_name):
     item_files = glob.glob('{0}/*'.format(dir_name))
     # pprint('upload_file_attachments(): {0}'.format(item_files))
-    ret = zotero.attachment_simple(item_files, item_id)
+    # Upload files in 50-file batches
+    item_files_batches = [item_files[idx:idx+50] for idx in range(0, len(item_files), 50)]
+    for batch in item_files_batches:
+        ret = zotero.attachment_simple(batch, item_id)
     # pprint('upload_file_attachments(): {0}'.format(ret))
     return True if not ret['failure'] else False
 
