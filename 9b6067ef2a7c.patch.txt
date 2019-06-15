@@ -1,0 +1,132 @@
+diff -r 149d96257ec2 -r 9b6067ef2a7c components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/HttpServerVerticle.java
+--- a/components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/HttpServerVerticle.java	Fri Apr 28 18:29:58 2017 -0400
++++ b/components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/HttpServerVerticle.java	Fri Apr 28 18:30:02 2017 -0400
+@@ -105,12 +105,10 @@
+         router.get( ROUTE_REFRESH_AE_TITLE_CACHE ).handler( new AeTitleCacheRefreshHandler() );
+         
+         router.route( ROUTE_EXTEND_SESSION )
+-              .handler( SecurityHandler.create()
+-                                       .setGoNextRoute( false )
+-                                       .setExtendSession( true ) );
++              .handler( SecurityHandler.create().setGoNextRoute( false ) );
+ 
+-        router.route().handler( SecurityHandler.create()
+-                                               .setExtendSession( true ) );
++        router.route().handler( SecurityHandler.create() );
++        
+         router.get( ROUTE_SEARCH_FOR_STUDIES ).handler( new SearchForStudiesHandler() );
+         router.get( ROUTE_SEARCH_FOR_SERIES ).handler( new SearchForSeriesHandler() );
+     }
+diff -r 149d96257ec2 -r 9b6067ef2a7c components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/SecurityHandler.java
+--- a/components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/SecurityHandler.java	Fri Apr 28 18:29:58 2017 -0400
++++ b/components/universalviewerservice/src/main/java/com/intelerad/universalviewerservice/SecurityHandler.java	Fri Apr 28 18:30:02 2017 -0400
+@@ -30,7 +30,6 @@
+ {
+     private static final String USER = "User";
+     private boolean mNextRoute = true;
+-    private boolean mExtendSession = false;
+ 
+     @Override
+     public void handle( RoutingContext routingContext )
+@@ -48,7 +47,6 @@
+ 
+     private void checkAccess( RoutingContext routingContext )
+     {
+-        UserSessionService1 userSessionService1 = getSessionService();
+         UserContext userContext = UserContextHandler.getUserContext( routingContext );
+ 
+         if ( userContext == null || !userContext.isAllFieldsPresent() )
+@@ -59,12 +57,23 @@
+         }
+ 
+         executeBlocking( routingContext,
+-                         () -> getSession( userContext, userSessionService1 ),
+-                         session -> sessionHandler( routingContext, userSessionService1, session ) );
++                         () -> PacsServices.getUserSessionService(),
++                         service -> validateSession( routingContext, userContext, service ) );
++    }
++
++    private void validateSession( RoutingContext routingContext,
++                                  UserContext userContext,
++                                  UserSessionService1 userSessionService )
++    {
++        getRequestLogger( routingContext ).trace( "Validating session" );
++        
++        executeBlocking( routingContext,
++                         () -> getSession( userContext, userSessionService ),
++                         session -> sessionHandler( routingContext, userSessionService, session ) );
+     }
+ 
+     private void sessionHandler( RoutingContext routingContext,
+-                                 UserSessionService1 userSessionService1,
++                                 UserSessionService1 userSessionService,
+                                  Optional<Session> sessionOptional )
+     {
+         Logger logger = getRequestLogger( routingContext );
+@@ -81,17 +90,13 @@
+         routingContext.put( USER, session.getUser() );
+ 
+         logger.trace( "Session validated: {0}", userContext );
+-        if ( mExtendSession )
+-        {
++        
++        logger.trace( "Extending session" );
++        
+             executeBlocking( routingContext,
+-                             () -> userSessionService1.extendSession( session ),
++                         () -> userSessionService.extendSession( session ),
+                              isExtended -> responseForExtendedSession( routingContext, isExtended ) );
+         }
+-        else
+-        {
+-            response( routingContext );
+-        }
+-    }
+ 
+     private void responseUnauthorized( RoutingContext routingContext )
+     {
+@@ -107,7 +112,6 @@
+         } else {
+             responseUnauthorized( routingContext );
+         }
+-
+     }
+ 
+     private void response( RoutingContext routingContext )
+@@ -139,15 +143,6 @@
+         return this;
+     }
+ 
+-    /**
+-     * By default "false"
+-     */
+-    public SecurityHandler setExtendSession( boolean extendSession )
+-    {
+-        mExtendSession = extendSession;
+-        return this;
+-    }
+-
+     public static SecurityHandler create()
+     {
+         return new SecurityHandler();
+@@ -175,20 +170,6 @@
+         return accessCodes;
+     }
+ 
+-    private static UserSessionService1 getSessionService()
+-    {
+-        try
+-        {
+-            // TODO: This should not happen on the event loop
+-            // Also has side effect of logging to global logger
+-            return PacsServices.getUserSessionService();
+-        }
+-        catch ( ServiceException ex )
+-        {
+-            throw new RuntimeException( ex );
+-        }
+-    }
+-
+     private static boolean isSessionValid( UserContext userContext, Session session )
+     {
+         //TODO: revisit this and use DefaultAuthenticator to check and extend session
