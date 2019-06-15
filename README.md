@@ -11,4 +11,6 @@ git secret add <filepath>
 git secret hide
 
 git secret reveal
+
+git rm --cached <filepath>
 ```
