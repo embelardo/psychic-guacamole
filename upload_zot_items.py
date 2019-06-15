@@ -1,17 +1,19 @@
 #!/usr/bin/python3.6
 
 import argparse
+import configparser
 import logging
 import logging.config
 import os
 import re
 import shutil
 import time
-import urllib.request
 import uuid
 
+from contextlib import closing
 from datetime import datetime
 from urllib.error import HTTPError
+from urllib.request import urlopen
 from xml.etree import ElementTree
 from xml.dom import minidom
 
@@ -29,6 +31,13 @@ from upload_zot_items_web_api import item_exists
 from upload_zot_items_web_api import upload_file_attachments
 
 TARGET_COLLECTION = 'uploaded_jira_tickets'
+
+config = configparser.ConfigParser()
+config.read('upload_zot_items.cfg')
+
+patch_url_prefix = config['upload_zot_items']['patch_url_prefix']
+patch_server = config['upload_zot_items']['patch_server']
+patch_test_server = config['upload_zot_items']['patch_test_server']
 
 
 logging.config.fileConfig(fname='log.cfg')
@@ -56,7 +65,8 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
        Extract latest patch date and convert into circa tag.
     """
     log.debug('Patch List      :')
-    regex = re.compile(r'.*(https://forge.intelerad.com/hg[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)')
+    pattern = '.*(' + patch_url_prefix + '[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)'
+    regex = re.compile(pattern)
     jira_date = None
     pacs_versions = []
     committer_pattern = re.compile(r'.*<([a-z]+)(@intelerad.com).*')
@@ -68,6 +78,7 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
             # Save raw patch to file.
             for match in regex.finditer(comment.cdata):
                 patch_url = match.group(1).replace('rev', 'raw-rev')
+                patch_url = patch_url.replace(patch_server, patch_test_server)
                 component_version = match.group(3)
                 repo_hash = match.group(2).split(':')
                 patch_filename = '{0}_{1}_{2}.patch.txt'.format(repo_hash[0], component_version, repo_hash[1])
@@ -76,15 +87,17 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                     pacs_versions.append(component_version)
                 log.debug('  {0} | {1}'.format(patch_url, patch_filename))
                 try:
-                    f = open(patch_filepath, 'w')
-                    patch_content = urllib.request.urlopen(patch_url).read().decode('ISO-8859-1')
-                    # Try to get committer
-                    if not committer:
-                        committer_match = committer_pattern.search(patch_content)
-                        if committer_match:
-                            committer = committer_match.group(1)
-                    f.write(patch_content)
-                    f.close()
+                    with closing(urlopen(patch_url)) as response:  # response is auto-closed
+                        # Save patch to file
+                        patch_content = response.read().decode('ISO-8859-1')
+                        f = open(patch_filepath, 'w')
+                        f.write(patch_content)
+                        f.close()
+                        # Try to get committer
+                        if not committer:
+                            committer_match = committer_pattern.search(patch_content)
+                            if committer_match:
+                                committer = committer_match.group(1)
                 except Exception as error:
                     log.debug(error)
                     log.debug('      Error accessing URL [{0}]'.format(patch_url))
