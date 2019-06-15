@@ -6,11 +6,11 @@ Encrypt/Decrypt private data ([...](https://git-secret.io))
 ```
 git secret list
 
+git rm --cached <filepath>
+
 git secret add <filepath>
 
 git secret hide
 
 git secret reveal
-
-git rm --cached <filepath>
 ```
