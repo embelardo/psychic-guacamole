@@ -6,7 +6,7 @@
              tmplt["filename"] = files[idx]
 +            if files[idx].endswith('.patch.txt'):
 +                tmplt["contentType"] = 'text/plain'
-+                tmplt["charset"] = 'iso-8859-1'
++                tmplt["charset"] = 'utf-8'
 +            elif files[idx].endswith('.xml'):
 +                tmplt["contentType"] = 'text/xml'
 +                tmplt["charset"] = 'utf-8'

@@ -7,6 +7,7 @@ import logging.config
 import os
 import re
 import shutil
+import subprocess
 import time
 import uuid
 
@@ -17,7 +18,6 @@ from urllib.request import urlopen
 from xml.etree import ElementTree
 from xml.dom import minidom
 
-import hglib
 import untangle
 
 from upload_zot_items_utils import format_jira_date
@@ -43,9 +43,6 @@ intelepacs_repo_path = config['upload_zot_items']['intelepacs_repo_path']
 email_address = config['upload_zot_items']['email_address']
 
 use_local_intelepacs_repo = os.path.exists(intelepacs_repo_path)
-hg_client = None
-if use_local_intelepacs_repo:
-    hg_client = hglib.open(intelepacs_repo_path)
 
 logging.config.fileConfig(fname='log.cfg')
 log = logging.getLogger('log')
@@ -66,7 +63,7 @@ def create_random_dir_name(key):
     return 'tmp/{0}_{1}'.format(key, str(uuid.uuid1()))
 
 
-def save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer, committer_regex):
+def save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer_regex, tags):
     """Get patch contents from server and save to file."""
     try:
         log.debug('  {0} | {1}'.format(patch_url, patch_filename))
@@ -78,30 +75,32 @@ def save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, commi
             f.write(patch_content)
             f.close()
             # Try to get committer
-            if not committer:
-                committer_match = committer_regex.search(patch_content)
-                if committer_match:
-                    committer = committer_match.group(1)
+            committer_match = committer_regex.search(patch_content)
+            if committer_match:
+                committer_tag = 'committer_{0}'.format(committer_match.group(1).lower())
+                if committer_tag not in tags:
+                    tags.append(committer_tag)
     except Exception as error:
         log.debug(error)
         log.debug('      Error accessing URL from remote repo [{0}]'.format(patch_url))
 
 
-def save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer, committer_regex):
+def save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer_regex, tags):
     """Get patch contents from local repo and save to file."""
     try:
-        log.debug('  {0} | {1}'.format(rev, patch_filename))
+        log.debug('  {0} (local repo) | {1}'.format(rev, patch_filename))
         # Save patch to file
-        patch_content_bytes = hg_client.diff(revs=[], change=rev, showfunction=True, ignoreallspace=True, unified=5, subrepos=False)
-        patch_content = patch_content_bytes.decode('ISO-8859-1')
+        result = subprocess.run(['hg', 'log', '-p', '-r', rev], cwd=intelepacs_repo_path, stdout=subprocess.PIPE)
+        patch_content = result.stdout.decode('UTF-8')
         f = open(patch_filepath, 'w')
         f.write(patch_content)
         f.close()
         # Try to get committer
-        if not committer:
-            committer_match = committer_regex.search(patch_content)
-            if committer_match:
-                committer = committer_match.group(1)
+        committer_match = committer_regex.search(patch_content)
+        if committer_match:
+            committer_tag = 'committer_{0}'.format(committer_match.group(1).lower())
+            if committer_tag not in tags:
+                tags.append(committer_tag)
     except Exception as error:
         log.debug(error)
         log.debug('      Error accessing revision from local repo [{0}]'.format(rev))
@@ -119,7 +118,6 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
     pacs_versions = []
     committer_pattern = '.*<([a-z]+)(' + email_address + ').*'
     committer_regex = re.compile(committer_pattern)
-    committer = None
     for comment in untangle_obj.item.comments.comment:
         if patch_url_regex.search(comment.cdata):
             jira_date = comment['created']
@@ -137,12 +135,9 @@ def save_patches_to_file(tags, untangle_obj, dir_name):
                 if component_version not in pacs_versions:
                     pacs_versions.append(component_version)
                 if repo == 'intelepacs' and use_local_intelepacs_repo:
-                    patch_content = save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer, committer_regex)
+                    patch_content = save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer_regex, tags)
                 else:
-                    patch_content = save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer, committer_regex)
-    # Add committer tag
-    if committer:
-        tags.append('committer_{0}'.format(committer.lower()))
+                    patch_content = save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer_regex, tags)
     # Add latest patch commit date as circa tag
     circa_tag = 'fixed_circa_' + format_jira_date(jira_date) if jira_date else 'fixed_circa_no_date'
     # log.debug('Circa Tag: {0}'.format(circa_tag))
@@ -266,7 +261,7 @@ def parse_jira_xml(args, target_collection_id):
         item_created = parse_jira_item(args, item_xml, target_collection_id)
         # Pause between item creations like a good citizen
         if item_created:
-            time.sleep(3)
+            time.sleep(2)
 
 
 def parse_arguments():

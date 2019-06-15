@@ -34,11 +34,6 @@ echo; echo "Install zotero-cli"
 # Zotero-cli is a simple command-line interface for the Zotero API.
 pip3.6 install zotero-cli
 
-echo; echo "Install hglib"
-# python-hglib is a library with a fast, convenient interface to Mercurial.
-# It uses Mercurial’s command server for communication with hg.
-pip3.6 install "hglib==2.6.1"
-
 echo; echo "Install pandoc"
 # Pandoc is a Haskell library for converting from one markup format to another,
 # and a command-line tool that uses this library.
