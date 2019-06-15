@@ -119,6 +119,7 @@ master-pirates/
 sample.xml
 sample_multiple_items.xml
 upload_zot_items.cfg
+ref_hg.py
 ref_parse_jira_xml_01.py
 ref_parse_jira_xml_02.py
 ref_pyzotero.py
