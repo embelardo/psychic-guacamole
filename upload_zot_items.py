@@ -17,6 +17,7 @@ from urllib.request import urlopen
 from xml.etree import ElementTree
 from xml.dom import minidom
 
+import hglib
 import untangle
 
 from upload_zot_items_utils import format_jira_date
@@ -38,7 +39,13 @@ config.read('upload_zot_items.cfg')
 patch_url_prefix = config['upload_zot_items']['patch_url_prefix']
 patch_server = config['upload_zot_items']['patch_server']
 patch_test_server = config['upload_zot_items']['patch_test_server']
+intelepacs_repo_path = config['upload_zot_items']['intelepacs_repo_path']
+email_address = config['upload_zot_items']['email_address']
 
+use_local_intelepacs_repo = os.path.exists(intelepacs_repo_path)
+hg_client = None
+if use_local_intelepacs_repo:
+    hg_client = hglib.open(intelepacs_repo_path)
 
 logging.config.fileConfig(fname='log.cfg')
 log = logging.getLogger('log')
@@ -59,48 +66,80 @@ def create_random_dir_name(key):
     return 'tmp/{0}_{1}'.format(key, str(uuid.uuid1()))
 
 
+def save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer, committer_regex):
+    """Get patch contents from server and save to file."""
+    try:
+        log.debug('  {0} | {1}'.format(patch_url, patch_filename))
+        with closing(urlopen(patch_url)) as response:  # response is auto-closed
+            # Save patch to file
+            patch_content_bytes = response.read()
+            patch_content = patch_content_bytes.decode('ISO-8859-1')
+            f = open(patch_filepath, 'w')
+            f.write(patch_content)
+            f.close()
+            # Try to get committer
+            if not committer:
+                committer_match = committer_regex.search(patch_content)
+                if committer_match:
+                    committer = committer_match.group(1)
+    except Exception as error:
+        log.debug(error)
+        log.debug('      Error accessing URL from remote repo [{0}]'.format(patch_url))
+
+
+def save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer, committer_regex):
+    """Get patch contents from local repo and save to file."""
+    try:
+        log.debug('  {0} | {1}'.format(rev, patch_filename))
+        # Save patch to file
+        patch_content_bytes = hg_client.diff(revs=[], change=rev, showfunction=True, ignoreallspace=True, unified=5, subrepos=False)
+        patch_content = patch_content_bytes.decode('ISO-8859-1')
+        f = open(patch_filepath, 'w')
+        f.write(patch_content)
+        f.close()
+        # Try to get committer
+        if not committer:
+            committer_match = committer_regex.search(patch_content)
+            if committer_match:
+                committer = committer_match.group(1)
+    except Exception as error:
+        log.debug(error)
+        log.debug('      Error accessing revision from local repo [{0}]'.format(rev))
+
+
 def save_patches_to_file(tags, untangle_obj, dir_name):
     """Save raw patch contents to a file.
        Extract earliest PACS version patched and convert into fixed version tag.
        Extract latest patch date and convert into circa tag.
     """
     log.debug('Patch List      :')
-    pattern = '.*(' + patch_url_prefix + '[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)'
-    regex = re.compile(pattern)
+    patch_url_pattern = '.*(' + patch_url_prefix + '[^\s"]+)"[\s]+[^\s>]+>([^\s>]+)<[^\s]+[\s]+[^\s]+[\s]+([^\s]+)'
+    patch_url_regex = re.compile(patch_url_pattern)
     jira_date = None
     pacs_versions = []
-    committer_pattern = re.compile(r'.*<([a-z]+)(@intelerad.com).*')
+    committer_pattern = '.*<([a-z]+)(' + email_address + ').*'
+    committer_regex = re.compile(committer_pattern)
     committer = None
     for comment in untangle_obj.item.comments.comment:
-        if regex.search(comment.cdata):
+        if patch_url_regex.search(comment.cdata):
             jira_date = comment['created']
             # log.debug('Patch Commit Date: '.format(jira_date))
             # Save raw patch to file.
-            for match in regex.finditer(comment.cdata):
+            for match in patch_url_regex.finditer(comment.cdata):
                 patch_url = match.group(1).replace('rev', 'raw-rev')
                 patch_url = patch_url.replace(patch_server, patch_test_server)
                 component_version = match.group(3)
-                repo_hash = match.group(2).split(':')
-                patch_filename = '{0}_{1}_{2}.patch.txt'.format(repo_hash[0], component_version, repo_hash[1])
+                repo_rev = match.group(2).split(':')
+                repo = repo_rev[0]
+                rev = repo_rev[1]
+                patch_filename = '{0}_{1}_{2}.patch.txt'.format(repo, component_version, rev)
                 patch_filepath = '{0}/{1}'.format(dir_name, patch_filename)
                 if component_version not in pacs_versions:
                     pacs_versions.append(component_version)
-                log.debug('  {0} | {1}'.format(patch_url, patch_filename))
-                try:
-                    with closing(urlopen(patch_url)) as response:  # response is auto-closed
-                        # Save patch to file
-                        patch_content = response.read().decode('ISO-8859-1')
-                        f = open(patch_filepath, 'w')
-                        f.write(patch_content)
-                        f.close()
-                        # Try to get committer
-                        if not committer:
-                            committer_match = committer_pattern.search(patch_content)
-                            if committer_match:
-                                committer = committer_match.group(1)
-                except Exception as error:
-                    log.debug(error)
-                    log.debug('      Error accessing URL [{0}]'.format(patch_url))
+                if repo == 'intelepacs' and use_local_intelepacs_repo:
+                    patch_content = save_patch_from_local_repo(rev, patch_filename, patch_filepath, committer, committer_regex)
+                else:
+                    patch_content = save_patch_from_remote_repo(patch_url, patch_filename, patch_filepath, committer, committer_regex)
     # Add committer tag
     if committer:
         tags.append('committer_{0}'.format(committer.lower()))

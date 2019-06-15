@@ -123,3 +123,6 @@ ref_parse_jira_xml_01.py
 ref_parse_jira_xml_02.py
 ref_pyzotero.py
 ref_regex.py
+
+# local repos
+master-pirates/
