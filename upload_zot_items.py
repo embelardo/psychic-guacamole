@@ -261,7 +261,7 @@ def parse_jira_xml(args, target_collection_id):
         item_created = parse_jira_item(args, item_xml, target_collection_id)
         # Pause between item creations like a good citizen
         if item_created:
-            time.sleep(2)
+            time.sleep(1)
 
 
 def parse_arguments():

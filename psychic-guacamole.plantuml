@@ -1,0 +1,43 @@
+@startuml psychic-guacamole
+
+skinparam backgroundcolor transparent
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName FuraCode Nerd Font
+skinparam defaultFontSize 12
+
+actor User
+participant Jira
+participant upload_zot_items.py
+collections Repo
+participant Zotero_Web_Api
+collections Zotero_Client
+
+User -> Jira +: Search for tickets
+Jira --> User -: XML
+
+User -> upload_zot_items.py +: Parse XML
+
+group For each ticket in XML
+
+upload_zot_items.py -> Repo +: Get patches
+Repo --> upload_zot_items.py -
+
+rnote over upload_zot_items.py: Using Pyzotero library\nto talk to Zotero_Web_Api
+
+upload_zot_items.py -> Zotero_Web_Api +: Create item\n(metadata and tags)
+Zotero_Web_Api --> upload_zot_items.py -
+
+upload_zot_items.py -> Zotero_Web_Api +: Upload item XML
+Zotero_Web_Api --> upload_zot_items.py -
+
+upload_zot_items.py -> Zotero_Web_Api +: Upload patches
+Zotero_Web_Api --> upload_zot_items.py -
+
+end
+
+upload_zot_items.py --> User -
+
+Zotero_Web_Api -> Zotero_Client: Synchronize
+
+@enduml
